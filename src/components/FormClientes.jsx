@@ -42,6 +42,9 @@ export default function FormClientes() {
     const ans = await postClientes(values);
     console.log(ans);
     setFormulario(formularioInicial);
+    if (ans) {
+      alert('Cliente registrado')
+    }
     return ans;
   }
 
@@ -87,6 +90,9 @@ export default function FormClientes() {
     console.log(updated)
     setFormulario(formularioInicial);
     setIsCliente(false)
+    if (updated) {
+      alert('Cliente modificado')
+    }
     return updated;
   }
 
@@ -105,6 +111,9 @@ export default function FormClientes() {
     const deleted = await handleDelete(values)
     setFormulario(formularioInicial);
     setIsCliente(false)
+    if (deleted) {
+      alert('Cliente elimnado')
+    }
     return deleted;
   }
 
@@ -154,7 +163,10 @@ export default function FormClientes() {
         <Formik
           enableReinitialize={true}
           initialValues={formulario}
-          onSubmit={values => handleSubmitsForm(values)}
+          onSubmit={(values, { resetForm }) => {
+            handleSubmitsForm(values);
+            resetForm();
+          }}
         >{props => (
 
           <Form style={{ 'display': 'grid', 'gap': '5px' }}>
@@ -187,35 +199,31 @@ export default function FormClientes() {
             />
             <div style={{ 'display': 'flex', 'gap': '5px', 'justify-content': 'space-between' }} >
               {!isCliente &&
-                <Button name='register' type='submit' onClick={() => setHttpAction('register')}>Ingresar</Button>
+                <>
+                  <Button name='register' type='submit' onClick={() => setHttpAction('register')}>Ingresar</Button>
+                  <Button type='button' onClick={props.handleReset}>Reset</Button>
+                </>
               }
               {
                 isCliente &&
                 <>
-                  <Button name='update' type='submit' onClick={() => setHttpAction('update')}>Actualizar</Button>
+                  <Button name='update' type='submit' onClick={() => { setHttpAction('update') }}>Actualizar</Button>
                   <Button name='delete' type='submit' onClick={() => setHttpAction('delete')}>Eliminar</Button>
+                  <Button
+                    onClick={() => {
+                      setFormulario(formularioInicial)
+                      setIsCliente(false)
+                      console.log('reset')
+                    }}
+                  >Reset
+                  </Button>
                 </>
               }
-              <Button
-
-                type='button'
-                onClick={props.handleReset}
-              //   onClick={() => {
-              // props.handleReset
-              //   // setFormulario(formulario == formularioInicial ? formularioAux : formularioInicial)
-              //   console.log(formulario)
-              //   setIsCliente(false)
-              //   // setFormulario(formularioInicial)
-              //   console.log('reset')
-              // }}
-              >Reset
-              </Button>
 
             </div>
           </Form>
         )}
         </Formik>
-        {isCliente.toString()}
       </FormContainer>
     </div >
   </>

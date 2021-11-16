@@ -19,22 +19,10 @@ const InputForm = ({ label, ...props }) => {
     <>
       <Wrapper>
         <label for={props.name}>{label}</label>
-        <Input id={props.name} {...field} {...props} />
+        <Input id={props.name} {...field} {...props} required />
       </Wrapper>
       {meta.touched && meta.error && <div>{meta.error}</div>}
     </>
   )
 }
-
-//   return (
-//     <div className="form-group row">
-//       <label className="control-label col-sm-4" for={props.id}>{label}</label>
-//       <div className="col-sm-8">
-//         <Input  {...props}
-//           required />
-//       </div>
-//     </div>
-//   )
-// }
-
 export default InputForm
