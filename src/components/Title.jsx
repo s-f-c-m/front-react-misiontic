@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import "font-awesome/css/font-awesome.min.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 const TitleBox = styled.div`
   font-size: 40px;
   color: white;

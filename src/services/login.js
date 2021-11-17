@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getSessionCookie } from '../auth/session'
 
 const login = async (credentials) => {
   const headers = {
@@ -11,7 +12,23 @@ const login = async (credentials) => {
   );
 
   return data;
-
 }
 
-export default { login }
+const isAuhtenticated = async () => {
+  const cookieSession = getSessionCookie();
+  const headers = {
+    "Authorization": "Bearer " + cookieSession,
+  };
+  try {
+    const { data } = await axios.get(
+      "http://localhost:8082/login/validate",
+      { headers }
+    );
+    console.log(data)
+    return data
+  } catch {
+    return { 'error': 'Not authorized' }
+  }
+}
+
+export { login, isAuhtenticated }

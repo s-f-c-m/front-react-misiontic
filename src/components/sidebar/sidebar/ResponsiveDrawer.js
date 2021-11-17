@@ -15,10 +15,12 @@ import { ThemeContext } from '../../../theme/ThemeContext';
 import NavLink from '../menus/NavLink'
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import PersonIcon from '@mui/icons-material/Person';
+import { SessionContext } from '../../../auth/session'
 
 const drawerWidth = 240;
 
 function ResponsiveDrawer({ children, window, ...props }) {
+
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -27,6 +29,7 @@ function ResponsiveDrawer({ children, window, ...props }) {
 
   const clientesIcon = <PersonIcon />
   const productosIcon = <UploadFileIcon />
+  const [session, setSession] = useContext(SessionContext)
 
   const drawer = (
     <div>

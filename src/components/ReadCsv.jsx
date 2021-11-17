@@ -44,7 +44,6 @@ const ReadCsv = () => {
     },
   };
 
-  console.log(userSession)
 
   return (
     <div>

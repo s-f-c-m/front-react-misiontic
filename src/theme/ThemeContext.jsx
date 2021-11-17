@@ -3,8 +3,10 @@ import { createContext, useReducer } from 'react';
 const ThemeContext = createContext();
 
 const defaultTheme = {
+  light: false,
   mainColor1: "#289dff",
   mainColor2: "#ff8a28",
+  secondaryColor1: "#7bc3ff",
   mainColor1Shadow1: "#2285d9",
   mainColor1Shadow2: "#2eb5ff",
   icon: "fa fa-sun-o",
@@ -43,7 +45,6 @@ const themeReducer = (state, action) => {
       return state;
   }
 };
-
 
 const ThemeProvider = ({ children }) => {
   const [state, dispatch] = useReducer(themeReducer, defaultTheme);

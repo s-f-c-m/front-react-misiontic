@@ -1,4 +1,4 @@
-import { createContext, useReducer } from 'react'
+import { createContext, useState } from 'react'
 import cookie from 'js-cookie'
 
 const setSessionCookie = (session) => {
@@ -16,8 +16,21 @@ const getSessionCookie = () => {
   }
 }
 
+const SessionContext = createContext();
 
-const SessionContext = createContext(getSessionCookie());
+const SessionProvider = props => {
+  const [session, setSession] = useState({
+    exp: '',
+    iat: '',
+    roles: [],
+    sub: ''
+  })
 
-export { setSessionCookie, getSessionCookie, SessionContext }
+  return (
+    <SessionContext.Provider value={[session, setSession]}>
+      {props.children}
+    </SessionContext.Provider>
+  )
+}
 
+export { setSessionCookie, getSessionCookie, SessionContext, SessionProvider }
