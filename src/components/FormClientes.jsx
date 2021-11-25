@@ -69,6 +69,7 @@ export default function FormClientes() {
     } else {
       setFormulario(formularioInicial)
       setIsCliente(false)
+      alert("Cédula no registrada")
     }
   }
 

@@ -13,6 +13,7 @@ import ProtectedRoute from './utils/ProtectedRoute'
 import { SessionContext, getSessionCookie, setSessionCookie } from './auth/session'
 import ResponsiveDrawer from './components/sidebar/sidebar/ResponsiveDrawer'
 import jwt_decode from 'jwt-decode'
+import FormVentas from "./components/Routes/FormVentas";
 
 function App() {
 
@@ -58,6 +59,13 @@ function App() {
             <ResponsiveDrawer>
               <>
                 <FormClientes />
+              </>
+            </ResponsiveDrawer>
+          } />
+          <Route path='/ventas' element={
+            <ResponsiveDrawer>
+              <>
+                <FormVentas />
               </>
             </ResponsiveDrawer>
           } />

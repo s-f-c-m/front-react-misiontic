@@ -12,6 +12,7 @@ import jwt_decode from 'jwt-decode'
 import { getSessionCookie } from "../auth/session";
 
 
+
 const Form = ({ setErrorMsg }) => {
   const [loading, setLoading] = useState(false)
   const [formulario, setFormulario] = useState({ user: "", password: "" });
@@ -46,7 +47,7 @@ const Form = ({ setErrorMsg }) => {
   }
 
   if (loading) {
-    return <h2>Iniciando...</h2>;
+    return <h5>Iniciando...</h5>;
   }
 
   console.log(formulario)
