@@ -1,26 +1,26 @@
-import "./App.css";
-import { Switch, Route, Link, Routes } from 'react-router-dom'
-import { useRef, useEffect } from "react";
-import { gsap } from 'gsap';
-import Content from "./components/Content";
-import MainBox from "./components/MainBox";
-import Title from "./components/Title";
-import LoginBox from "./components/LoginBox";
+import './App.css'
+import { Route, Routes } from 'react-router-dom'
+import { useRef, useEffect } from 'react'
+import { gsap } from 'gsap'
+import Content from './components/Content'
+import MainBox from './components/MainBox'
+import Title from './components/Title'
+import LoginBox from './components/LoginBox'
 import ReadCsv from './components/ReadCsv'
 import ButtonTheme from './components/ButtonTheme'
 import FormClientes from './components/FormClientes'
 import ProtectedRoute from './utils/ProtectedRoute'
 import { SessionProvider } from './auth/session'
 import ResponsiveDrawer from './components/sidebar/sidebar/ResponsiveDrawer'
+import DataTableTest from './components/DataTable/DataTableTest'
 
-function App() {
-
-  const slideCard = useRef();
-  var tl = gsap.timeline();
+function App () {
+  const slideCard = useRef()
+  const tl = gsap.timeline()
 
   useEffect(() => {
-    tl.fromTo('.slidingCard', { x: 0 }, { x: -240, duration: 1.5 });
-  }, []);
+    tl.fromTo('.slidingCard', { x: 0 }, { x: -240, duration: 1.5 })
+  }, [])
 
   return (
     <Content>
@@ -33,6 +33,11 @@ function App() {
               <LoginBox slideCard={slideCard}>Bienvenido</LoginBox>
             </MainBox>
           } />
+          <Route path='/dev' element={
+            <ResponsiveDrawer>
+            <DataTableTest />
+            </ResponsiveDrawer>
+      } />
 
           <Route path='/productos' element={
             <ProtectedRoute>
@@ -51,7 +56,7 @@ function App() {
         </Routes>
       </SessionProvider>
     </Content>
-  );
+  )
 }
 
-export default App;
+export default App

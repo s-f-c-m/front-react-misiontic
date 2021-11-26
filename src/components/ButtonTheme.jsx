@@ -30,9 +30,9 @@ const ButtonTheme = ({ style }) => {
 
   const handleTheme = () => {
     if (lighttheme) {
-      theme.dispatch({ type: 'DARKTHEME' });
+      theme.dispatch({ type: 'DARKTHEME' })
     } else {
-      theme.dispatch({ type: 'LIGHTTHEME' });
+      theme.dispatch({ type: 'LIGHTTHEME' })
     }
   }
 

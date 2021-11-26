@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'
 
 const NoAccess = () => {
   const [counter, setCounter] = useState(10)
@@ -9,7 +9,7 @@ const NoAccess = () => {
     if (counter > 0) {
       setTimeout(() => {
         setCounter(counter - 1)
-      }, 1000);
+      }, 1000)
     } else {
       nav('/')
     }

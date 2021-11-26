@@ -1,7 +1,6 @@
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import ListItem from '@mui/material/ListItem'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useContext } from 'react'
@@ -20,7 +19,7 @@ const LinkWrapper = styled(Link)`
 const NavLink = ({ link, children, icon }) => {
   const theme = useContext(ThemeContext)
   return (
-    <ListItem button key="registrarUsuario" style={{ 'backgroundColor': theme.state.mainColor2 }}>
+    <ListItem button key="registrarUsuario" style={{ backgroundColor: theme.state.mainColor2 }}>
       <LinkWrapper to={link}>
         <ListItemIcon>
           {icon}

@@ -1,6 +1,6 @@
-import { useField } from 'formik';
-import Input from './Input.jsx';
-import styled from 'styled-components';
+import { useField } from 'formik'
+import Input from './Input.jsx'
+import styled from 'styled-components'
 
 const Wrapper = styled.div`
   display: grid;
@@ -18,7 +18,7 @@ const InputForm = ({ label, ...props }) => {
   return (
     <>
       <Wrapper>
-        <label for={props.name}>{label}</label>
+        <label htmlFor={props.name}>{label}</label>
         <Input id={props.name} {...field} {...props} required />
       </Wrapper>
       {meta.touched && meta.error && <div>{meta.error}</div>}

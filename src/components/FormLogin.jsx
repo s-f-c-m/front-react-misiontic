@@ -1,27 +1,26 @@
-import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import Input from './Input';
-import Button from './Button';
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Input from './Input'
+import Button from './Button'
 import FormBase from './FormBase'
 import { login } from '../services/login'
-import { setSessionCookie } from "../auth/session";
-
+import { setSessionCookie } from '../auth/session'
 
 const Form = ({ setErrorMsg }) => {
   const [loading, setLoading] = useState(false)
-  const [formulario, setFormulario] = useState({ user: "", password: "" });
-  const nav = useNavigate();
+  const [formulario, setFormulario] = useState({ user: '', password: '' })
+  const nav = useNavigate()
 
   const handleForm = (e) => {
     setFormulario({
       ...formulario,
-      [e.target.name]: e.target.value,
-    });
-  };
+      [e.target.name]: e.target.value
+    })
+  }
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault()
+    setLoading(true)
     try {
       const token = await login(formulario)
       setSessionCookie(token.token)
@@ -29,7 +28,7 @@ const Form = ({ setErrorMsg }) => {
       setLoading(false)
     } catch {
       setLoading(false)
-      setFormulario({ user: '', password: '' });
+      setFormulario({ user: '', password: '' })
       setErrorMsg('Usuario y/o contraseña incorrectos')
       setTimeout(() => {
         setErrorMsg(null)
@@ -38,7 +37,7 @@ const Form = ({ setErrorMsg }) => {
   }
 
   if (loading) {
-    return <h2>Iniciando...</h2>;
+    return <h2>Iniciando...</h2>
   }
 
   return (
@@ -60,7 +59,7 @@ const Form = ({ setErrorMsg }) => {
       />
       <Button>Ingresar</Button>
     </FormBase>
-  );
-};
+  )
+}
 
-export default Form;
+export default Form
