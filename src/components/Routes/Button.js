@@ -6,7 +6,7 @@ import { styled } from '@mui/system';
 
 const CustomButtonRoot = styled('button')`
   background-color: #007fff;
-  padding: 15px 20px;
+  padding: 5px 20px;
   border-radius: 10px;
   color: #fff;
   font-weight: 600;
