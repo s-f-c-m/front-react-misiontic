@@ -20,6 +20,9 @@ import TableRow from '@mui/material/TableRow';
 import { Input } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import { height } from '@mui/system';
 
 
@@ -116,137 +119,89 @@ export default function FormVentas() {
                 },
             }}
         >
-            <Paper elevation={3}>
-                <Paper elevation={3} >
+            <Paper elevation={12} sx={{ background: "E0F7FA", padding: "20px" }}>
 
-                    <form onSubmit={handleSubmitFormCliente}>
-                        <Box sx={{ flexGrow: 1 }}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={4}>
-
+                <form onSubmit={handleSubmitFormCliente}>
+                    <Box sx={{ flexGrow: 1, margin: "20px" }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={6} md={3}>
                                     <Input name="cedula" placeholder="Cédula del cliente"
                                         onChange={(e) => setCedula(e.target.value)} margin="normal" size="small" />
-                                </Grid>
-                                <Grid item xs={2}>
-                                    <Button type="submit">Buscar</Button>
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <Input name="nombre" placeholder="Nombre del cliente" value={name} margin="normal" size = "small" />
-                                </Grid>
-
                             </Grid>
-
-
-
-
-                        </Box>
-                    </form>
-                </Paper>
-
-
-
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                        <TableHead>
-                            <TableRow>
-                                <StyledTableCell>Código</StyledTableCell>
-                                <StyledTableCell ></StyledTableCell>
-                                <StyledTableCell >Producto</StyledTableCell>
-                                <StyledTableCell >Cantidad</StyledTableCell>
-                                <StyledTableCell ></StyledTableCell>
-                                <StyledTableCell >Total</StyledTableCell>
-                                <StyledTableCell ></StyledTableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            <StyledTableRow >
-                                <StyledTableCell>
-                                    <Input name="codigoProducto" placeholder="Código del Producto"
-                                        onChange={(e) => setCodigoProducto(e.target.value)} margin="normal" size="small" />
-                                </StyledTableCell>
-                                <StyledTableCell align="right">
-                                    <Button type="button" onClick={handleSubmitFormVenta} size="small">Buscar</Button>
-                                </StyledTableCell>
-                                <StyledTableCell align="right">
-                                    <Input name="nombreProducto" placeholder="Producto" value={nombreProducto} margin="normal" size="small" />
-                                </StyledTableCell>
-                                <StyledTableCell align="right">
-                                    <Input name="cantidad" type="number" placeholder="cantidad" margin="normal" size="small" pattern='[0-9]*' />
-                                </StyledTableCell>
-                                <StyledTableCell align="right">
-                                    <Button type="submit" size="small">Calcular</Button>
-                                </StyledTableCell>
-                                <StyledTableCell align="right">
-                                    <Input name="Total" placeholder="Total" startAdornment={<InputAdornment position="start">$</InputAdornment>} margin="normal" size="small" />
-                                </StyledTableCell>
-                                <StyledTableCell align="right">
-                                    <IconButton color="primary" aria-label="upload picture" component="span">
-                                        <DeleteIcon />
+                            <Grid item xs={6} md={1}>
+                                    <IconButton type="submit" size="small" component="spam">
+                                        <PersonSearchIcon />
                                     </IconButton>
-                                </StyledTableCell>
-                            </StyledTableRow>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                            </Grid>
+                            <Grid item xs={6} md={8}>
+                                    <Input name="nombre" placeholder="Nombre del cliente" value={name} margin="normal" size="small" />
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </form>
 
-                <Box sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={6} md={3}>
-                            <Item>
-                                <TextField name="cedula" placeholder="Cédula del cliente"
-                                    onChange={(e) => setCedula(e.target.value)} margin="dense" />
-                            </Item>
+                <Box sx={{ flexGrow: 1, margin: "20px" }}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={6} md={2}>
+                                <Input name="codigoProducto" placeholder="Código del Producto"
+                                    onChange={(e) => setCodigoProducto(e.target.value)} margin="normal" size="small" xs={{ height: "50px" }} />
                         </Grid>
                         <Grid item xs={6} md={1}>
-                            <Item>
-                                <Button type="submit">Buscar</Button>
-                            </Item>
+                                <IconButton type="button" onClick={handleSubmitFormVenta} size="small" component="spam">
+                                    <SearchIcon />
+                                </IconButton>
                         </Grid>
-                        <Grid item xs={6} md={8}>
-                            <Item>
-                                <TextField name="nombre" placeholder="Nombre del cliente" value={name} margin="dense" />
-                            </Item>
+                        <Grid item xs={6} md={3}>
+                                <Input name="nombreProducto" placeholder="Producto" value={nombreProducto} margin="normal" size="small" />
+                        </Grid>
+                        <Grid item xs={6} md={1.5}>
+                                <Input name="cantidad" type="number" placeholder="cantidad" margin="normal" size="small" pattern='[0-9]*' />
+                        </Grid>
+                        <Grid item xs={6} md={3}>
+                                <Input name="Total" placeholder="Total" startAdornment={<InputAdornment position="start">$</InputAdornment>} margin="normal" size="small" />
+                        </Grid>
+                        <Grid item xs={6} md={0.75}>
+                                <IconButton type="submit" size="small" component="spam">
+                                    <AddShoppingCartIcon />
+                                </IconButton>
+                        </Grid>
+                        <Grid item xs={6} md={0.75}>
+                                <IconButton type="submit" size="small" component="spam">
+                                    <DeleteIcon />
+                                </IconButton>
                         </Grid>
                     </Grid>
                 </Box>
 
-                <Box sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={0}>
+                <Box sx={{ flexGrow: 1 ,margin: "20px" }}>
+                    <Grid container spacing={1}>
                         <Grid item xs={6} md={2}>
-                            <Item>
                                 <Input name="codigoProducto" placeholder="Código del Producto"
                                     onChange={(e) => setCodigoProducto(e.target.value)} margin="normal" size="small" xs={{ height: "50px" }} />
-                            </Item>
                         </Grid>
                         <Grid item xs={6} md={1}>
-                            <Item>
-                                <Button type="button" onClick={handleSubmitFormVenta} size="small" variant="text">Buscar</Button>
-                            </Item>
+                                <IconButton type="button" onClick={handleSubmitFormVenta} size="small" component="spam">
+                                    <SearchIcon />
+                                </IconButton>
                         </Grid>
                         <Grid item xs={6} md={3}>
-                            <Item>
                                 <Input name="nombreProducto" placeholder="Producto" value={nombreProducto} margin="normal" size="small" />
-                            </Item>
                         </Grid>
-                        <Grid item xs={6} md={1}>
-                            <Item>
+                        <Grid item xs={6} md={1.5}>
                                 <Input name="cantidad" type="number" placeholder="cantidad" margin="normal" size="small" pattern='[0-9]*' />
-                            </Item>
-                        </Grid>
-                        <Grid item xs={6} md={1}>
-                            <Item>
-                                <Button type="submit" size="small" variant="text">Calcular</Button>
-                            </Item>
                         </Grid>
                         <Grid item xs={6} md={3}>
-                            <Item>
                                 <Input name="Total" placeholder="Total" startAdornment={<InputAdornment position="start">$</InputAdornment>} margin="normal" size="small" />
-                            </Item>
                         </Grid>
-                        <Grid item xs={6} md={1}>
-                            <Item>
-                                eliminar
-                            </Item>
+                        <Grid item xs={6} md={0.75}>
+                                <IconButton type="submit" size="small" component="spam">
+                                    <AddShoppingCartIcon />
+                                </IconButton>
+                        </Grid>
+                        <Grid item xs={6} md={0.75}>
+                                <IconButton type="submit" size="small" component="spam">
+                                    <DeleteIcon />
+                                </IconButton>
                         </Grid>
                     </Grid>
                 </Box>
