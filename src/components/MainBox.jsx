@@ -1,6 +1,6 @@
-import { useContext } from "react";
-import styled from "styled-components";
-import { ThemeContext } from "../theme/ThemeContext";
+import { useContext } from 'react'
+import styled from 'styled-components'
+import { ThemeContext } from '../theme/ThemeContext'
 
 const MainBoxWrapper = styled.div`
   width: 765px;
@@ -13,7 +13,7 @@ const MainBoxWrapper = styled.div`
   transition: box-shadow ease 1s;
   box-shadow: 20px 20px 60px ${(props) => props.theme.mainColor1Shadow1}, 
   -20px -20px 60px ${(props) => props.theme.mainColor1Shadow2};
-`;
+`
 
 const MainBox = ({ children }) => {
   const theme = useContext(ThemeContext)
@@ -24,4 +24,4 @@ const MainBox = ({ children }) => {
   )
 }
 
-export default MainBox;
+export default MainBox

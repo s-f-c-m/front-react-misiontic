@@ -5,14 +5,13 @@ const useLoadCsv = () => {
   const [csvArray, setCsvArray] = useState([])
 
   const loadCsv = (e) => {
-
     const file = e.target.files[0]
-    const reader = new FileReader();
-    reader.readAsText(file);
-    reader.onload = function(e) {
-      const text = e.target.result;
-      setCsvArray(csvToArray(text));
-    };
+    const reader = new FileReader()
+    reader.readAsText(file)
+    reader.onload = function (e) {
+      const text = e.target.result
+      setCsvArray(csvToArray(text))
+    }
   }
 
   const clearCsvArray = () => {
@@ -23,4 +22,3 @@ const useLoadCsv = () => {
 }
 
 export default useLoadCsv
-

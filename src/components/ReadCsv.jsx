@@ -1,56 +1,50 @@
-import { useState, useEffect, useRef, useContext } from "react";
-import Input from "./Input";
-import Button from "./Button";
-import axios from "axios";
-import Tabla from "./componentesTienda/tablaInfo/Tabla";
-import useLoadCsv from "../hooks/useLoadCsv"
-import { SessionContext } from "../auth/session";
+import { useRef } from 'react'
+import Input from './Input'
+import Button from './Button'
+import axios from 'axios'
+import Tabla from './componentesTienda/tablaInfo/Tabla'
+import useLoadCsv from '../hooks/useLoadCsv'
 
 const ReadCsv = () => {
-
-  const [csvArray, loadCsv, clearCsvArray] = useLoadCsv();
-  const inputFile = useRef();
-  const { userSession } = useContext(SessionContext)
-
+  const [csvArray, loadCsv, clearCsvArray] = useLoadCsv()
+  const inputFile = useRef()
 
   const clearTable = () => {
     clearCsvArray()
-    inputFile.current.value = "";
-  };
+    inputFile.current.value = ''
+  }
 
   const handlePostProductos = async () => {
-    const body = JSON.stringify(csvArray);
+    const body = JSON.stringify(csvArray)
     const headers = {
-      "Content-Type": "application/json",
-    };
+      'Content-Type': 'application/json'
+    }
     try {
-      const response = await axios.post(
-        "http://localhost:8085/api/productos",
+      await axios.post(
+        'http://localhost:8085/api/productos',
         body,
         { headers }
-      );
+      )
     } catch {
-      alert("Error al cargar");
-      return;
+      alert('Error al cargar')
+      return
     }
-    alert("Carga exitosa");
-    clearTable();
-  };
+    alert('Carga exitosa')
+    clearTable()
+  }
 
   const styles = {
     form: {
-      display: "flex",
-      gap: "5px",
-    },
-  };
-
-  console.log(userSession)
+      display: 'flex',
+      gap: '5px'
+    }
+  }
 
   return (
     <div>
       <form id="csv-form" style={styles.form}>
         <Input
-          style={{ color: "white" }}
+          style={{ color: 'white' }}
           ref={inputFile}
           type="file"
           accept=".csv"
@@ -58,7 +52,7 @@ const ReadCsv = () => {
           onChange={loadCsv}
           onClick={clearTable}
         />
-        <Button type='reset' onClick={clearTable} type="button">
+        <Button onClick={clearTable} type="button">
           Limpiar
         </Button>
       </form>
@@ -72,7 +66,7 @@ const ReadCsv = () => {
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ReadCsv;
+export default ReadCsv

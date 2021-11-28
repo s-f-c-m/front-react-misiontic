@@ -1,45 +1,32 @@
-import "./App.css";
-import { Switch, Route, Link, Routes } from 'react-router-dom'
-import { useRef, useEffect, useState } from "react";
-import { gsap } from 'gsap';
-import Content from "./components/Content";
-import MainBox from "./components/MainBox";
-import Title from "./components/Title";
-import LoginBox from "./components/LoginBox";
+import './App.css'
+import { Route, Routes } from 'react-router-dom'
+import { useRef, useEffect } from 'react'
+import { gsap } from 'gsap'
+import Content from './components/Content'
+import MainBox from './components/MainBox'
+import Title from './components/Title'
+import LoginBox from './components/LoginBox'
 import ReadCsv from './components/ReadCsv'
 import ButtonTheme from './components/ButtonTheme'
-import FormClientes from './components/FormClientes'
 import ProtectedRoute from './utils/ProtectedRoute'
-import { SessionContext, getSessionCookie, setSessionCookie } from './auth/session'
+import { SessionProvider } from './auth/session'
 import ResponsiveDrawer from './components/sidebar/sidebar/ResponsiveDrawer'
-import jwt_decode from 'jwt-decode'
 import FormVentas from "./components/Routes/FormVentas";
-
-function App() {
-
-  const slideCard = useRef();
-  var tl = gsap.timeline();
-  useEffect(() => {
-    tl.fromTo('.slidingCard', { x: 0 }, { x: -240, duration: 1.5 });
-  }, []);
+import Clientes from './pages/Clientes'
+import Usuarios from './pages/Usuarios'
 
 
-  try {
-    var userInfo = jwt_decode(getSessionCookie());
-  } catch {
-    userInfo = ''
-  }
-
-
-  const [userSession, setUserSession] = useState(userInfo);
+function App () {
+  const slideCard = useRef()
+  const tl = gsap.timeline()
 
   useEffect(() => {
-    setUserSession(userInfo)
-  }, []);
+    tl.fromTo('.slidingCard', { x: 0 }, { x: -240, duration: 1.5 })
+  }, [])
 
   return (
-    <SessionContext.Provider value={{ userSession, setUserSession }}>
-      <Content>
+    <Content>
+      <SessionProvider>
         <Routes>
           <Route path='/' element={
             <MainBox >
@@ -48,19 +35,32 @@ function App() {
               <LoginBox slideCard={slideCard}>Bienvenido</LoginBox>
             </MainBox>
           } />
-          <Route path='/productos' element={
+          <Route path='/dev' element={
             <ResponsiveDrawer>
-              <>
-                <ReadCsv />
-              </>
+            <Clientes />
             </ResponsiveDrawer>
+      } />
+
+          <Route path='/productos' element={
+            <ProtectedRoute>
+              <ResponsiveDrawer>
+                <ReadCsv />
+              </ResponsiveDrawer>
+            </ProtectedRoute>
           } />
           <Route path='/clientes' element={
-            <ResponsiveDrawer>
-              <>
-                <FormClientes />
-              </>
-            </ResponsiveDrawer>
+            <ProtectedRoute>
+              <ResponsiveDrawer>
+                <Clientes />
+              </ResponsiveDrawer>
+            </ProtectedRoute>
+          } />
+          <Route path='/usuarios' element={
+            <ProtectedRoute>
+              <ResponsiveDrawer>
+                <Usuarios />
+              </ResponsiveDrawer>
+            </ProtectedRoute>
           } />
           <Route path='/ventas' element={
             <ResponsiveDrawer>
@@ -70,9 +70,9 @@ function App() {
             </ResponsiveDrawer>
           } />
         </Routes>
-      </Content>
-    </SessionContext.Provider>
-  );
+      </SessionProvider>
+    </Content>
+  )
 }
 
-export default App;
+export default App

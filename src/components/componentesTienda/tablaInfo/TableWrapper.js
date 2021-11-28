@@ -1,7 +1,7 @@
-export default function TableWrapper(props) {
-  const style={
-    'backgroundColor':'white',
-    'margin': '10px'
+export default function TableWrapper (props) {
+  const style = {
+    backgroundColor: 'white',
+    margin: '10px'
   }
   return (
     <div style={style} className="table-responsive container-fluid" id="tablaInformacion">
@@ -12,5 +12,5 @@ export default function TableWrapper(props) {
         <tbody>{props.children}</tbody>
       </table>
     </div>
-  );
+  )
 }

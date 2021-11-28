@@ -1,6 +1,6 @@
-import { useState, useContext } from 'react';
-import styled from "styled-components";
-import { ThemeContext } from '../theme/ThemeContext';
+import { useState, useContext } from 'react'
+import styled from 'styled-components'
+import { ThemeContext } from '../theme/ThemeContext'
 import FormLogin from './FormLogin'
 
 const Box = styled.div`
@@ -12,14 +12,14 @@ const Box = styled.div`
   border-radius: 5px;
   overflow: hidden;
   margin-bottom: 10%;
-`;
+`
 const Cards = styled.div`
   width: 50%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-`;
+`
 const Left = styled(Cards)`
   background-color: ${(props) => props.theme.mainColor2};
   color: ${(props) => !props.errorMsg ? 'white' : 'red'};
@@ -35,24 +35,22 @@ const Left = styled(Cards)`
   transform: translateX(-240px);
   box-shadow: 1px 0 5px rgb(0, 0, 0, 0.3);
   }
-`;
+`
 const Right = styled(Cards)`
   background-color: white;
-`;
-
-
+`
 
 const LoginBox = ({ children, slideCard }) => {
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null)
   const theme = useContext(ThemeContext)
   return (
     <Box>
-      <Left className='slidingCard' theme={theme.state} ref={slideCard} errorMsg={errorMsg}>{errorMsg ? errorMsg : children}</Left>
+      <Left className='slidingCard' theme={theme.state} ref={slideCard} errorMsg={errorMsg}>{errorMsg || children}</Left>
       <Right theme={theme.state} >
         <FormLogin setErrorMsg={setErrorMsg} />
       </Right>
     </Box>
-  );
-};
+  )
+}
 
-export default LoginBox;
+export default LoginBox

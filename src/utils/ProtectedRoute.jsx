@@ -1,35 +1,48 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
-import cookie from 'js-cookie'
-import jwt from 'jsonwebtoken'
+import { useState, useEffect, useContext } from 'react'
+import { SessionContext } from '../auth/session'
+import { isAuhtenticated } from '../services/login'
+import NoAccess from '../pages/NoAccess'
+import { useNavigate } from 'react-router-dom'
 
 const ProtectedRoute = ({ children }) => {
-
-  const nav = useNavigate();
-  const jwt_secret = "secret"
-  const [token, setToken] = useState(cookie.get('tg-session'))
-  const [validUser, setValidUser] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [session, setSession] = useContext(SessionContext)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    if (token) {
-      jwt.verify(token, jwt_secret, (err, decoded) => {
-        if (err) {
-          cookie.remove('tg-session')
-          setToken(null);
-          nav('/')
+    setLoading(true)
+    const loadData = async () => {
+      isAuhtenticated().then(data => {
+        if (data.error) {
+          console.log(data.error)
+          setSession({
+            ...session,
+            sub: ''
+          })
+          setLoading(false)
+        } else {
+          setSession({
+            ...session,
+            exp: data.exp,
+            iat: data.iat,
+            roles: data.roles,
+            sub: data.sub
+          })
+          setLoading(false)
         }
-        console.log(decoded)
-        setValidUser(true)
       })
-    } else {
-      nav('/')
     }
-  })
 
-  return (validUser && <>{
-    children
+    loadData()
+  }, [navigate])
+
+  if (loading) {
+    return <></>
   }
-  </>
+
+  return (session.sub !== ''
+    ? <>{ children } </>
+    : <NoAccess />
   )
 }
 

@@ -1,17 +1,34 @@
-import axios from "axios";
+import axios from 'axios'
+import { getSessionCookie } from '../auth/session'
 
 const login = async (credentials) => {
   const headers = {
-    "Content-Type": "application/json",
-  };
+    'Content-Type': 'application/json'
+  }
   const { data } = await axios.post(
-    "http://localhost:8082/login",
+    'http://localhost:8082/login',
     credentials,
     { headers }
-  );
+  )
 
-  return data;
-
+  return data
 }
 
-export default { login }
+const isAuhtenticated = async () => {
+  const cookieSession = getSessionCookie()
+  const headers = {
+    Authorization: 'Bearer ' + cookieSession
+  }
+  try {
+    const { data } = await axios.get(
+      'http://localhost:8082/login/validate',
+      { headers }
+    )
+    console.log(data)
+    return data
+  } catch {
+    return { error: 'Not authorized' }
+  }
+}
+
+export { login, isAuhtenticated }
