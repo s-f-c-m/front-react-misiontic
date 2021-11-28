@@ -6,6 +6,7 @@ import FormBase from './FormBase'
 import { login } from '../services/login'
 import { setSessionCookie } from '../auth/session'
 
+
 const Form = ({ setErrorMsg }) => {
   const [loading, setLoading] = useState(false)
   const [formulario, setFormulario] = useState({ user: '', password: '' })

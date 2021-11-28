@@ -11,8 +11,10 @@ import ButtonTheme from './components/ButtonTheme'
 import ProtectedRoute from './utils/ProtectedRoute'
 import { SessionProvider } from './auth/session'
 import ResponsiveDrawer from './components/sidebar/sidebar/ResponsiveDrawer'
+import FormVentas from "./components/Routes/FormVentas";
 import Clientes from './pages/Clientes'
 import Usuarios from './pages/Usuarios'
+
 
 function App () {
   const slideCard = useRef()
@@ -59,6 +61,13 @@ function App () {
                 <Usuarios />
               </ResponsiveDrawer>
             </ProtectedRoute>
+          } />
+          <Route path='/ventas' element={
+            <ResponsiveDrawer>
+              <>
+                <FormVentas />
+              </>
+            </ResponsiveDrawer>
           } />
         </Routes>
       </SessionProvider>
