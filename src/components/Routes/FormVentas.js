@@ -3,7 +3,7 @@
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import axios from "axios";
@@ -24,6 +24,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import { height } from '@mui/system';
+import ListadoProductos from './ListadoProductos';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -92,8 +93,14 @@ export default function FormVentas(props) {
 
     const [codigoProducto, setCodigoProducto] = useState()
     const [nombreProducto, setNombreProducto] = useState("")
+    const [cantidadProducto, setCantidadProducto] = useState(0)
+    const [valorTotalProducto, setValorTotalProducto] = useState("0") // cantidad por valor unitario (incluye IVA)
 
+    const valorProducto = useRef(0) //valor unitario del producto
 
+    //console.log("---cantidad del producto:" + cantidadProducto)
+    //console.log("---valor del producto" + valorProducto.current)
+    //console.log("---total: " + cantidadProducto * valorProducto.current)
 
 
     const handleSumbitVenta = (e) => {
@@ -108,6 +115,7 @@ export default function FormVentas(props) {
 
 
     const buscarProducto = async (e) => {
+        e.preventDefault()
         const headers = {
             "Content-Type": "application/json"
         };
@@ -118,6 +126,7 @@ export default function FormVentas(props) {
                 { headers }
             )
             setNombreProducto(data.nombreProducto)
+            valorProducto.current = data.precioVenta
         }
         catch {
             alert("producto no encontrado")
@@ -132,54 +141,47 @@ export default function FormVentas(props) {
 
     const [carrito, setCarrito] = useState([])
 
-    const listadoProductos = useRef([])
-
-
+ 
 
     const addProducto = () => {
 
+        let listaAux = []
 
-        const producto = <form>
-            <Box sx={{ flexGrow: 1, margin: "20px" }}>
-                <Grid container spacing={1}>
-                    <Grid item xs={6} md={2}>
-                        <Input name="codigoProducto" placeholder="Código del Producto"
-                            onChange={(e) => setCodigoProducto(e.target.value)} margin="normal" size="small" disabled/>
-                    </Grid>
-                    <Grid item xs={6} md={1}>
-                        <IconButton type="button" size="small" component="spam">
-                            <SearchIcon />
-                        </IconButton>
-                        <button type="submit" name="btnVentaProducto" value="buscarProducto" disabled> <SearchIcon /> </button>
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                        <Input name="nombreProducto" placeholder="Producto" value={nombreProducto} margin="normal" size="small" disabled/>
-                    </Grid>
-                    <Grid item xs={6} md={1.5}>
-                        <Input name="cantidad" type="number" placeholder="cantidad" margin="normal" size="small" pattern='[0-9]*' disabled/>
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                        <Input name="Total" placeholder="Total" startAdornment={<InputAdornment position="start">$</InputAdornment>} margin="normal" size="small" disabled/>
-                    </Grid>
-                    <Grid item xs={6} md={0.75}>
+        listaAux =  carrito
 
+        listaAux.push({
+            key: codigoProducto,
+            data: {
+                nombre : nombreProducto,
+                cantidad : cantidadProducto,
+                total : valorTotalProducto
+            }
+        })
 
-                    </Grid>
-                    <Grid item xs={6} md={0.75}>
-                        <IconButton type="submit" size="small" component="spam">
-                            <DeleteIcon />
-                        </IconButton>
-                    </Grid>
-                </Grid>
-            </Box>
-        </form>
+        setCarrito(listaAux)
 
-       
+        valorProducto.current = 0;
+        setCodigoProducto("")
+        setNombreProducto("")
+        setCantidadProducto(0)
+        setValorTotalProducto(0)
+        console.log(carrito)
 
     }
 
+    const listaPrueba = [
+        {key: 777,
+            data: {
+                nombre : "nombre",
+                cantidad : "7",
+                total : "7777"
+            }}
+    ] 
+
+console.log({codigoProducto})
 
 
+console.log(carrito)
     return <>
         <Box
             sx={{
@@ -213,35 +215,39 @@ export default function FormVentas(props) {
                     </Box>
                 </form>
 
+  
+                <ListadoProductos listado={carrito}/>
 
-                {carrito}
 
                 <form>
                     <Box sx={{ flexGrow: 1, margin: "20px" }}>
                         <Grid container spacing={1}>
                             <Grid item xs={6} md={2}>
-                                <Input name="codigoProducto" placeholder="Código del Producto"
-                                    onChange={(e) => setCodigoProducto(e.target.value)} margin="normal" size="small" />
+                                <Input name="codigoProducto" placeholder="Código del Producto" value = {codigoProducto}
+                                    onChange={(e) => setCodigoProducto(e.target.value)} margin="normal" size="small" required/>
                             </Grid>
                             <Grid item xs={6} md={1}>
-                                <IconButton type="button" size="small" component="spam">
+                                <IconButton type="button" size="small" component="spam" onClick={buscarProducto}>
                                     <SearchIcon />
                                 </IconButton>
-                                <button type="submit" name="btnVentaProducto" value="buscarProducto" > <SearchIcon /> </button>
                             </Grid>
                             <Grid item xs={6} md={3}>
                                 <Input name="nombreProducto" placeholder="Producto" value={nombreProducto} margin="normal" size="small" />
                             </Grid>
                             <Grid item xs={6} md={1.5}>
-                                <Input name="cantidad" type="number" placeholder="cantidad" margin="normal" size="small" pattern='[0-9]*' />
+                                <Input name="cantidad" type="number" placeholder="cantidad" margin="normal" size="small" pattern='[0-9]*' value = {cantidadProducto} onChange={(e) => {
+                                    setCantidadProducto(e.target.value)
+                                    setValorTotalProducto(e.target.value * valorProducto.current)
+                                    setCantidadProducto(e.target.value) 
+                                }} required/>
                             </Grid>
                             <Grid item xs={6} md={3}>
-                                <Input name="Total" placeholder="Total" startAdornment={<InputAdornment position="start">$</InputAdornment>} margin="normal" size="small" />
+                                <Input name="Total" placeholder="Total" value={valorTotalProducto} startAdornment={<InputAdornment position="start">$</InputAdornment>} margin="normal" size="small" />
                             </Grid>
                             <Grid item xs={6} md={0.75}>
                                 <IconButton type="button" size="small" component="spam" onClick={addProducto}>
                                     <AddShoppingCartIcon />
-                                </IconButton>                                
+                                </IconButton>
                             </Grid>
                             <Grid item xs={6} md={0.75}>
 
