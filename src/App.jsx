@@ -8,11 +8,11 @@ import Title from './components/Title'
 import LoginBox from './components/LoginBox'
 import ReadCsv from './components/ReadCsv'
 import ButtonTheme from './components/ButtonTheme'
-import FormClientes from './components/FormClientes'
 import ProtectedRoute from './utils/ProtectedRoute'
 import { SessionProvider } from './auth/session'
 import ResponsiveDrawer from './components/sidebar/sidebar/ResponsiveDrawer'
-import DataTableTest from './components/DataTable/DataTableTest'
+import Clientes from './pages/Clientes'
+import Usuarios from './pages/Usuarios'
 
 function App () {
   const slideCard = useRef()
@@ -35,7 +35,7 @@ function App () {
           } />
           <Route path='/dev' element={
             <ResponsiveDrawer>
-            <DataTableTest />
+            <Clientes />
             </ResponsiveDrawer>
       } />
 
@@ -49,7 +49,14 @@ function App () {
           <Route path='/clientes' element={
             <ProtectedRoute>
               <ResponsiveDrawer>
-                <FormClientes />
+                <Clientes />
+              </ResponsiveDrawer>
+            </ProtectedRoute>
+          } />
+          <Route path='/usuarios' element={
+            <ProtectedRoute>
+              <ResponsiveDrawer>
+                <Usuarios />
               </ResponsiveDrawer>
             </ProtectedRoute>
           } />

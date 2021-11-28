@@ -8,6 +8,7 @@ const Wrapper = styled.div`
   gap: 5px;
   width:100%;
   justify-content: space-between;
+  color: white;
   @media (max-width: 600px){
     grid-template-columns: 1fr;
   }

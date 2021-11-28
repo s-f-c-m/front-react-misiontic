@@ -31,6 +31,7 @@ function ResponsiveDrawer ({ children, window, ...props }) {
       <Toolbar />
       <NavLink link='/productos' icon={productosIcon} >Productos</NavLink>
       <NavLink link='/clientes' icon={clientesIcon}>Clientes</NavLink>
+      <NavLink link='/usuarios' icon={clientesIcon}>Usuarios</NavLink>
       {/* <Link to='/clientes'>Clientes</Link> */}
       {/* <AccordionSummary /> */}
     </div>

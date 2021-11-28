@@ -6,15 +6,33 @@ import Tooltip from '@mui/material/Tooltip'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
+import Modal from '@mui/material/Modal'
+import Box from '@mui/material/Box'
+import { useState, cloneElement } from 'react'
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'background-paper',
+  boder: 'none'
+}
 
 const EnhancedTableToolbar = (props) => {
-  const { numSelected, search, setSearch, title } = props
+  const { numSelected, selected, search, setSearch, title, form, deleteFunction } = props
+  const [formOpen, setFormOpen] = useState(false)
+  const handleFormOpen = () => setFormOpen(true)
+  const handleFormClose = () => setFormOpen(false)
 
   const handleSearch = (e) => {
     setSearch(e.target.value)
   }
 
+  const formFinal = cloneElement(form, { selected: selected })
+
   return (
+    <>
     <Toolbar
       sx={{
         pl: { sm: 2 },
@@ -47,43 +65,46 @@ const EnhancedTableToolbar = (props) => {
         </Typography>
           )}
 
-          <input style={{ flex: '1 1 100%' }} placeholder='search' value={search} onChange={handleSearch}/>
-
-      {(() => {
-        if (numSelected > 1) {
-          return (
-            <Tooltip title="Delete">
-              <IconButton>
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          )
-        } else if (numSelected === 1) {
-          return (
-            <>
+          <input style={{ flex: '1 1 100%' }} placeholder='Buscar' value={search} onChange={handleSearch}/>
+          <div style={{ display: 'flex', width: '100%', justifyContent: 'flex-end' }}>
+        {numSelected > 0
+          ? (
               <Tooltip title="Delete">
-                <IconButton>
+                <IconButton onClick={() => deleteFunction(selected)}>
                   <DeleteIcon />
                 </IconButton>
               </Tooltip>
+            )
+          : (
+              <Tooltip title="Add">
+                <IconButton onClick={handleFormOpen}>
+                  <AddIcon />
+                </IconButton>
+              </Tooltip>
+            )
+        }
+        { numSelected === 1 &&
+          (
               <Tooltip title="Edit">
-                <IconButton>
+                <IconButton onClick={handleFormOpen}>
                   <ModeEditIcon />
                 </IconButton>
               </Tooltip>
-            </>
-          )
-        } else {
-          return (
-            <Tooltip title="Add">
-              <IconButton>
-                <AddIcon />
-              </IconButton>
-            </Tooltip>
           )
         }
-      })()}
+          </div>
     </Toolbar>
+    <Modal
+      open={formOpen}
+      onClose={handleFormClose}
+      aria-labelledby='modal-modal-title'
+      aria-describedby='modal-modal-description'
+    >
+        <Box sx={style}>
+        {formFinal}
+        </Box>
+    </Modal>
+      </>
   )
 }
 export default EnhancedTableToolbar

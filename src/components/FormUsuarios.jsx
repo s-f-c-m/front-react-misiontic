@@ -6,42 +6,50 @@ import { Formik, Form } from 'formik'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
 // import Stack from '@mui/material/Stack'
-import serviceClientes from '../services/clientes'
+import serviceUsuarios from '../services/usuarios'
 
-export default function FormClientes (props) {
+export default function FormUsuarios (props) {
   const [isCliente, setIsCliente] = useState(false)
   const { selected, flagToUpdate, setFlagToUpdate } = props
   const [message, setMessage] = useState({ severity: '', title: '', message: '' })
 
   const formularioInicial = {
-    cedulaCliente: '',
-    nombreCliente: '',
-    emailCliente: '',
-    direccionCliente: '',
-    telefonoCliente: ''
+    user: '',
+    password: '',
+    passwordconfirm: '',
+    name: '',
+    email: '',
+    roles: ['user']
   }
 
   const [formulario, setFormulario] = useState(formularioInicial)
   const [httpAction, setHttpAction] = useState('')
+  const [passerror, setPasserror] = useState(false)
 
   const handleSubmitsForm = async (values) => {
     const op = httpAction
     switch (op) {
       case 'register':
-        serviceClientes.postCliente(values).then(() => {
-          setMessage({ severity: 'success', title: 'Cliente Agregado', message: 'Se agregó el cliente satisfactoriamente' })
+        if (values.password !== values.passwordconfirm) {
+          setPasserror(true)
+          setTimeout(() => {
+            setPasserror(false)
+          }, 2500)
+          break
+        }
+        serviceUsuarios.postUsuario(values).then(() => {
+          setMessage({ severity: 'success', title: 'Usuario Agregado', message: 'Se agregó el usuario satisfactoriamente' })
         }).catch(() => {
-          setMessage({ severity: 'error', title: 'Error Agregar', message: 'Ocurrió un error al agregar el cliente. Intente de nuevo o comuníquese con el administrador' })
-          alert('Error al agregar cliente')
+          setMessage({ severity: 'error', title: 'Error Agregar', message: 'Ocurrió un error al agregar el usuario. Intente de nuevo o comuníquese con el administrador' })
         }).finally(() => {
           setFlagToUpdate(!flagToUpdate)
         })
         break
       case 'update':
-        serviceClientes.putCliente(values).then(() => {
-          setMessage({ severity: 'success', title: 'Cliente Modificado', message: 'Se modificó el cliente satisfactoriamente' })
+        serviceUsuarios.putUsuario(values).then(() => {
+          setMessage({ severity: 'success', title: 'Usuario Modificado', message: 'Se modificó el usuario satisfactoriamente' })
         }).catch(() => {
-          setMessage({ severity: 'error', title: 'Error Modificar', message: 'Ocurrió un error al modificar el cliente. Intente de nuevo o comuníquese con el administrador' })
+          setMessage({ severity: 'error', title: 'Error Modificar', message: 'Ocurrió un error al modificar el usuario. Intente de nuevo o comuníquese con el administrador' })
         }).finally(() => {
           setFlagToUpdate(!flagToUpdate)
         })
@@ -53,10 +61,10 @@ export default function FormClientes (props) {
 
   useEffect(() => {
     if (selected.length === 1) {
-      serviceClientes.getCliente(selected[0]).then((data) => {
+      serviceUsuarios.getUsuario(selected[0]).then((data) => {
         setFormulario(data)
       }).catch(() => {
-        alert('Error al consultar cliente')
+        alert('Error al consultar usuario')
       }).finally(() => {
         setIsCliente(true)
       })
@@ -73,43 +81,53 @@ export default function FormClientes (props) {
   }
 
   return <>
+
     <div style={{ display: 'flex', 'flex-direction': 'column' }}>
+    {passerror &&
+    <Alert severity='error'>
+    <AlertTitle>Error</AlertTitle>
+    Contraseñas no coinciden
+    </Alert>
+    }
+
       <FormContainer >
         <Formik
           enableReinitialize={true}
           initialValues={formulario}
           onSubmit={(values, { resetForm }) => {
             handleSubmitsForm(values)
-            resetForm()
+            // resetForm()
           }}
         >{props => (
           <Form style={{ display: 'grid', gap: '5px' }}>
             <InputForm
-              label='Cédula'
-              name='cedulaCliente'
-              placeholder='Cédula del cliente'
+              label='usuario'
+              name='user'
+              placeholder='Usuario'
               disabled={isCliente}
             />
             <InputForm
               label='Nombre'
-              name='nombreCliente'
-              placeholder='Nombre del Cliente'
+              name='name'
+              placeholder='Nombre del usuario'
             />
             <InputForm
               label='Email'
-              name='emailCliente'
+              name='email'
               type='email'
-              placeholder='Email del cliente'
+              placeholder='Email del usuario'
             />
             <InputForm
-              label='Dirección'
-              name='direccionCliente'
-              placeholder='Dirección del cliente'
+              label='Contraseña'
+              name='password'
+              type='password'
+              placeholder='Contraseña'
             />
             <InputForm
-              label='Teléfono'
-              name='telefonoCliente'
-              placeholder='Teléfono del cliente'
+              label='Confirmar Contraseña'
+              name='passwordconfirm'
+              type='password'
+              placeholder='Confirmar'
             />
             <div style={{ display: 'flex', gap: '5px', 'justify-content': 'space-between' }} >
               {!isCliente &&

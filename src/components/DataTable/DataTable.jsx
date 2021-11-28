@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -46,7 +45,7 @@ export default function DataTable (props) {
   const [orderBy, setOrderBy] = useState('calories')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
-  const { data, headCells, search, setSearch, title, selected, setSelected } = props
+  const { data, headCells, search, setSearch, title, selected, setSelected, form, deleteFunction } = props
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -99,9 +98,16 @@ export default function DataTable (props) {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} search={search} setSearch={setSearch} title={title} />
+      <Paper elevation={12} sx={{ width: '100%', mb: 2 }}>
+        <EnhancedTableToolbar
+          selected={selected}
+          numSelected={selected.length}
+          search={search}
+          setSearch={setSearch}
+          title={title}
+          form={form}
+          deleteFunction={deleteFunction}
+        />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -123,7 +129,6 @@ export default function DataTable (props) {
               {stableSort(data, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  console.log(row[Object.keys(row)[0]])
                   const id = row[Object.keys(row)[0]]
                   const isItemSelected = isSelected(id)
                   const labelId = `enhanced-table-checkbox-${index}`
@@ -166,7 +171,7 @@ export default function DataTable (props) {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10]}
           component="div"
           count={data.length}
           rowsPerPage={rowsPerPage}
@@ -175,6 +180,5 @@ export default function DataTable (props) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-    </Box>
   )
 }

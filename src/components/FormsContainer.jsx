@@ -1,15 +1,25 @@
+import styled from 'styled-components'
+import { useContext } from 'react'
+import { ThemeContext } from '../theme/ThemeContext'
 
-const FormContainer = ({ titulo, children }) => {
+const ContentWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props) => props.theme.mainColor1};
+  padding: 25px 15px;
+  border-radius: 5px;
+`
+
+const FormContainer = ({ children }) => {
+  const theme = useContext(ThemeContext)
   return (
-    <div className="card text-white bg-info mb-3" style={{ width: '100%', 'max-width': '500px' }}>
-      <div className="card-header">{titulo}</div>
-      <div className="card-body">
-        <div className="container">
-          {children}
-        </div>
-      </div>
-    </div>
+    <ContentWrapper theme={theme.state} >
+      {children}
+    </ContentWrapper>
   )
 }
-
 export default FormContainer
