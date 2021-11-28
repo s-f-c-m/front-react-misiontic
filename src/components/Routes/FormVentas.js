@@ -60,7 +60,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 
-export default function FormVentas() {
+export default function FormVentas(props) {
 
 
     //// scripts para buscar el cliente:
@@ -93,19 +93,19 @@ export default function FormVentas() {
     const [codigoProducto, setCodigoProducto] = useState()
     const [nombreProducto, setNombreProducto] = useState("")
 
-    
-    
+
+
     const handleSumbitVenta = (e) => {
         e.preventDefault()
-        console.log(e)
-        if(e.target.btnVentaProducto.value === "buscarProducto"){
+        //console.log(e)
+        if (e.target.btnVentaProducto.value === "buscarProducto") {
             buscarProducto()
         }
 
     }
-    
-    
-    
+
+
+
     const buscarProducto = async (e) => {
         const headers = {
             "Content-Type": "application/json"
@@ -128,57 +128,57 @@ export default function FormVentas() {
 
     ////Carrito:
 
+
     const [carrito, setCarrito] = useState([])
-    var listadoProductos = [] 
 
-  
-    const addProducto = () => { 
-       
-        var consecutivo = carrito.length +1
+    const listadoProductos = useRef([])
 
-        const producto =  <form onSubmit={handleSumbitVenta} id = {consecutivo}>
-        <Box sx={{ flexGrow: 1, margin: "20px" }}>
-            <Grid container spacing={1}>
-                <Grid item xs={6} md={2}>
-                    <Input name="codigoProducto" placeholder="Código del Producto"
-                        onChange={(e) => setCodigoProducto(e.target.value)} margin="normal" size="small" />
-                </Grid>
-                <Grid item xs={6} md={1}>
-                    <IconButton type="button" size="small" component="spam">
-                        <SearchIcon />
-                    </IconButton>
-                    <button type = "submit" name = "btnVentaProducto" value = "buscarProducto" > <SearchIcon /> </button>
-                </Grid>
-                <Grid item xs={6} md={3}>
-                    <Input name="nombreProducto" placeholder="Producto" value={nombreProducto} margin="normal" size="small" />
-                </Grid>
-                <Grid item xs={6} md={1.5}>
-                    <Input name="cantidad" type="number" placeholder="cantidad" margin="normal" size="small" pattern='[0-9]*' />
-                </Grid>
-                <Grid item xs={6} md={3}>
-                    <Input name="Total" placeholder="Total" startAdornment={<InputAdornment position="start">$</InputAdornment>} margin="normal" size="small" />
-                </Grid>
-                <Grid item xs={6} md={0.75}>
-                    <IconButton type="submit" size="small" component="spam" onClick = {addProducto}>
-                        <AddShoppingCartIcon />
-                    </IconButton>
-                    <button type = "submit" name = "btnVentaProducto2" value = "addProducto"><AddShoppingCartIcon /></button>
-                </Grid>
-                <Grid item xs={6} md={0.75}>
-                    <IconButton type="submit" size="small" component="spam">
-                        <DeleteIcon />
-                    </IconButton>
-                    <button type = "submit" name = "btnVentaProducto3" value = "addProducto"><AddShoppingCartIcon /></button>
 
+    const addProducto = () => {
+
+
+        const producto = <form>
+            <Box sx={{ flexGrow: 1, margin: "20px" }}>
+                <Grid container spacing={1}>
+                    <Grid item xs={6} md={2}>
+                        <Input name="codigoProducto" placeholder="Código del Producto"
+                            onChange={(e) => setCodigoProducto(e.target.value)} margin="normal" size="small" disabled/>
+                    </Grid>
+                    <Grid item xs={6} md={1}>
+                        <IconButton type="button" size="small" component="spam">
+                            <SearchIcon />
+                        </IconButton>
+                        <button type="submit" name="btnVentaProducto" value="buscarProducto" disabled> <SearchIcon /> </button>
+                    </Grid>
+                    <Grid item xs={6} md={3}>
+                        <Input name="nombreProducto" placeholder="Producto" value={nombreProducto} margin="normal" size="small" disabled/>
+                    </Grid>
+                    <Grid item xs={6} md={1.5}>
+                        <Input name="cantidad" type="number" placeholder="cantidad" margin="normal" size="small" pattern='[0-9]*' disabled/>
+                    </Grid>
+                    <Grid item xs={6} md={3}>
+                        <Input name="Total" placeholder="Total" startAdornment={<InputAdornment position="start">$</InputAdornment>} margin="normal" size="small" disabled/>
+                    </Grid>
+                    <Grid item xs={6} md={0.75}>
+
+
+                    </Grid>
+                    <Grid item xs={6} md={0.75}>
+                        <IconButton type="submit" size="small" component="spam">
+                            <DeleteIcon />
+                        </IconButton>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </Box>
+            </Box>
         </form>
 
-        listadoProductos.push(producto)
+        let listado = listadoProductos.current
+        listado.push(producto)
 
-        setCarrito(listadoProductos)
-  
+        setCarrito(listado)
+
+        listadoProductos.current = listado
+
     }
 
 
@@ -217,50 +217,42 @@ export default function FormVentas() {
                 </form>
 
 
-                {carrito.map(producto => {
-                    return producto
-                })}
+                {carrito}
+
+                <form>
+                    <Box sx={{ flexGrow: 1, margin: "20px" }}>
+                        <Grid container spacing={1}>
+                            <Grid item xs={6} md={2}>
+                                <Input name="codigoProducto" placeholder="Código del Producto"
+                                    onChange={(e) => setCodigoProducto(e.target.value)} margin="normal" size="small" />
+                            </Grid>
+                            <Grid item xs={6} md={1}>
+                                <IconButton type="button" size="small" component="spam">
+                                    <SearchIcon />
+                                </IconButton>
+                                <button type="submit" name="btnVentaProducto" value="buscarProducto" > <SearchIcon /> </button>
+                            </Grid>
+                            <Grid item xs={6} md={3}>
+                                <Input name="nombreProducto" placeholder="Producto" value={nombreProducto} margin="normal" size="small" />
+                            </Grid>
+                            <Grid item xs={6} md={1.5}>
+                                <Input name="cantidad" type="number" placeholder="cantidad" margin="normal" size="small" pattern='[0-9]*' />
+                            </Grid>
+                            <Grid item xs={6} md={3}>
+                                <Input name="Total" placeholder="Total" startAdornment={<InputAdornment position="start">$</InputAdornment>} margin="normal" size="small" />
+                            </Grid>
+                            <Grid item xs={6} md={0.75}>
+                                <IconButton type="button" size="small" component="spam" onClick={addProducto}>
+                                    <AddShoppingCartIcon />
+                                </IconButton>                                
+                            </Grid>
+                            <Grid item xs={6} md={0.75}>
 
 
-                <form onSubmit={handleSumbitVenta}>
-                <Box sx={{ flexGrow: 1, margin: "20px" }}>
-                    <Grid container spacing={1}>
-                        <Grid item xs={6} md={2}>
-                            <Input name="codigoProducto" placeholder="Código del Producto"
-                                onChange={(e) => setCodigoProducto(e.target.value)} margin="normal" size="small" xs={{ height: "50px" }} />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={6} md={1}>
-                            <IconButton type="button" size="small" component="spam">
-                                <SearchIcon />
-                            </IconButton>
-                            <button type = "submit" name = "btnVentaProducto" value = "buscarProducto" > <SearchIcon /> </button>
-                        </Grid>
-                        <Grid item xs={6} md={3}>
-                            <Input name="nombreProducto" placeholder="Producto" value={nombreProducto} margin="normal" size="small" />
-                        </Grid>
-                        <Grid item xs={6} md={1.5}>
-                            <Input name="cantidad" type="number" placeholder="cantidad" margin="normal" size="small" pattern='[0-9]*' />
-                        </Grid>
-                        <Grid item xs={6} md={3}>
-                            <Input name="Total" placeholder="Total" startAdornment={<InputAdornment position="start">$</InputAdornment>} margin="normal" size="small" />
-                        </Grid>
-                        <Grid item xs={6} md={0.75}>
-                            <IconButton type="button" size="small" component="spam" onClick = {addProducto}>
-                                <AddShoppingCartIcon />
-                            </IconButton>
-                            <button type = "submit" name = "btnVentaProducto2" value = "addProducto"><AddShoppingCartIcon /></button>
-                        </Grid>
-                        <Grid item xs={6} md={0.75}>
-                            <IconButton type="submit" size="small" component="spam">
-                                <DeleteIcon />
-                            </IconButton>
-                    <button type = "submit" name = "btnVentaProducto3" value = "addProducto"><AddShoppingCartIcon /></button>
-
-                        </Grid>
-                    </Grid>
-                </Box>
+                    </Box>
                 </form>
-              
             </Paper>
         </Box>
 
