@@ -30,10 +30,7 @@ export default function ListadoProductos({ listado, ...props }) {
                                     <Input  value = {producto.key} margin="normal" size="small" disabled />
                                 </Grid>
                                 <Grid item xs={6} md={1}>
-                                    <IconButton type="button" size="small" component="spam">
-                                        <SearchIcon />
-                                    </IconButton>
-                                    <button type="submit" value="buscarProducto" disabled> <SearchIcon /> </button>
+                                    
                                 </Grid>
                                 <Grid item xs={6} md={3.25}>
                                     <Input value={producto.data.nombre} margin="normal" size="small" disabled />

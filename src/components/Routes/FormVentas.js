@@ -145,21 +145,16 @@ export default function FormVentas(props) {
 
     const addProducto = () => {
 
-        let listaAux = []
 
-        listaAux =  carrito
-
-        listaAux.push({
-            key: codigoProducto,
-            data: {
-                nombre : nombreProducto,
-                cantidad : cantidadProducto,
-                total : valorTotalProducto
-            }
-        })
-
-        setCarrito(listaAux)
-
+        setCarrito([...carrito, 
+            {
+                key: codigoProducto,
+                data: {
+                    nombre : nombreProducto,
+                    cantidad : cantidadProducto,
+                    total : valorTotalProducto
+                }
+            }])
         valorProducto.current = 0;
         setCodigoProducto("")
         setNombreProducto("")
@@ -203,7 +198,7 @@ console.log(carrito)
                                     onChange={(e) => setCedula(e.target.value)} margin="normal" size="small" />
                             </Grid>
                             <Grid item xs={6} md={1}>
-                                <IconButton size="small" component="spam" sx={{ type: "submit" }}>
+                                <IconButton type = "submit" size="small" component="spam">
                                     <PersonSearchIcon />
                                 </IconButton>
                                 <button type="submit"><PersonSearchIcon /></button>
