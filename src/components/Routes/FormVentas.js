@@ -95,6 +95,7 @@ export default function FormVentas(props) {
 
 
 
+
     const handleSumbitVenta = (e) => {
         e.preventDefault()
         //console.log(e)
@@ -132,6 +133,7 @@ export default function FormVentas(props) {
     const [carrito, setCarrito] = useState([])
 
     const listadoProductos = useRef([])
+
 
 
     const addProducto = () => {
@@ -172,12 +174,7 @@ export default function FormVentas(props) {
             </Box>
         </form>
 
-        let listado = listadoProductos.current
-        listado.push(producto)
-
-        setCarrito(listado)
-
-        listadoProductos.current = listado
+       
 
     }
 
