@@ -8,7 +8,7 @@ import Title from './components/Title'
 import LoginBox from './components/LoginBox'
 import ReadCsv from './components/ReadCsv'
 import ButtonTheme from './components/ButtonTheme'
-import ProtectedRoute from './utils/ProtectedRoute'
+// import ProtectedRoute from './utils/ProtectedRoute'
 import { SessionProvider } from './auth/session'
 import ResponsiveDrawer from './components/sidebar/sidebar/ResponsiveDrawer'
 import FormVentas from './components/Routes/FormVentas'
@@ -41,25 +41,25 @@ function App () {
       } />
 
           <Route path='/productos' element={
-            <ProtectedRoute>
+            // <ProtectedRoute>
               <ResponsiveDrawer>
                 <ReadCsv />
               </ResponsiveDrawer>
-            </ProtectedRoute>
+            // </ProtectedRoute>
           } />
           <Route path='/clientes' element={
-            <ProtectedRoute>
+            // <ProtectedRoute>
               <ResponsiveDrawer>
                 <Clientes />
               </ResponsiveDrawer>
-            </ProtectedRoute>
+            // </ProtectedRoute>
           } />
           <Route path='/usuarios' element={
-            <ProtectedRoute>
+            // <ProtectedRoute>
               <ResponsiveDrawer>
                 <Usuarios />
               </ResponsiveDrawer>
-            </ProtectedRoute>
+            // </ProtectedRoute>
           } />
           <Route path='/ventas' element={
             <ResponsiveDrawer>

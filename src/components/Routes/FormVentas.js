@@ -10,6 +10,11 @@ import SearchIcon from '@mui/icons-material/Search'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import PersonSearchIcon from '@mui/icons-material/PersonSearch'
 import ListadoProductos from './ListadoProductos'
+import TableContainer from '@mui/material/TableContainer'
+// import InputLabel from '@mui/material/InputLabel'
+import TextField from '@mui/material/TextField'
+// import Fab from '@mui/material/Fab'
+
 
 export default function FormVentas (props) {
   /// / scripts para buscar el cliente:
@@ -39,6 +44,8 @@ export default function FormVentas (props) {
   const [nombreProducto, setNombreProducto] = useState('')
   const [cantidadProducto, setCantidadProducto] = useState(0)
   const [valorTotalProducto, setValorTotalProducto] = useState('0') // cantidad por valor unitario (incluye IVA)
+  const [totalVenta, setTotalVenta] = useState(0)
+  const [currentTotal, setCurrentTotal] = useState(totalVenta)
 
   const valorProducto = useRef(0) // valor unitario del producto
 
@@ -87,6 +94,7 @@ export default function FormVentas (props) {
         }
       }])
     valorProducto.current = 0
+    setTotalVenta(currentTotal)
     setCodigoProducto('')
     setNombreProducto('')
     setCantidadProducto(0)
@@ -110,7 +118,13 @@ export default function FormVentas (props) {
   const refForm = useRef()
   console.log(refForm)
 
-  console.log(carrito)
+  // Eliminar producto del carrito:
+  const eliminarProducto = (id) => {
+    const newCarrito = carrito.filter((product) => product.key !== id)
+    setCarrito(newCarrito)
+  }
+
+
   return <>
         <Box
             sx={{
@@ -123,10 +137,10 @@ export default function FormVentas (props) {
             }}
         >
             <Paper elevation={12} sx={{ background: 'E0F7FA', padding: '20px' }}>
-
+            <TableContainer sx={{ maxHeight: 440 }}>
                 <form onSubmit={handleSubmitFormCliente} ref={refForm}>
-                    <Box sx={{ flexGrow: 1, margin: '20px 20px 40px 20px' }}>
-                        <Grid container spacing={2}>
+                    <Box sx={{ flexGrow: 1, margin: '20px 20px 40px 20px', justifyContent: 'center' }}>
+                        <Grid container spacing={1}>
                             <Grid item xs={6} md={3}>
                                 <Input name="cedula" placeholder="Cédula del cliente"
                                     onChange={(e) => setCedula(e.target.value)} margin="normal" size="small" />
@@ -137,18 +151,21 @@ export default function FormVentas (props) {
                                 </IconButton>
                                 <button type="submit"><PersonSearchIcon /></button>
                             </Grid>
-                            <Grid item xs={6} md={8}>
+                            <Grid item xs={6} md={3}>
                                 <Input name="nombre" placeholder="Nombre del cliente" value={name} margin="normal" size="small" />
                             </Grid>
+                        </Grid>
+                        <Grid item xs={6} md={3} style={{ marginLeft: 'auto' }}>
                         </Grid>
                     </Box>
                 </form>
 
-                <ListadoProductos listado={carrito}/>
-
                 <form>
                     <Box sx={{ flexGrow: 1, margin: '20px' }}>
                         <Grid container spacing={1}>
+                            <Grid item xs={6} md={0.5}>
+                                    <label name="consecutivo">#</label>
+                            </Grid>
                             <Grid item xs={6} md={2}>
                                 <Input name="codigoProducto" placeholder="Código del Producto" value = {codigoProducto}
                                     onChange={(e) => setCodigoProducto(e.target.value)} margin="normal" size="small" required/>
@@ -158,7 +175,7 @@ export default function FormVentas (props) {
                                     <SearchIcon />
                                 </IconButton>
                             </Grid>
-                            <Grid item xs={6} md={3}>
+                            <Grid item xs={6} md={3.25}>
                                 <Input name="nombreProducto" placeholder="Producto" value={nombreProducto} margin="normal" size="small" />
                             </Grid>
                             <Grid item xs={6} md={1.5}>
@@ -166,23 +183,48 @@ export default function FormVentas (props) {
                                   setCantidadProducto(e.target.value)
                                   setValorTotalProducto(e.target.value * valorProducto.current)
                                   setCantidadProducto(e.target.value)
+                                  const valor = totalVenta + e.target.value * valorProducto.current
+                                  setCurrentTotal(valor)
                                 }} required/>
                             </Grid>
-                            <Grid item xs={6} md={3}>
+                            <Grid item xs={6} md={2.25}>
                                 <Input name="Total" placeholder="Total" value={valorTotalProducto} startAdornment={<InputAdornment position="start">$</InputAdornment>} margin="normal" size="small" />
-                            </Grid>
-                            <Grid item xs={6} md={0.75}>
-                                <IconButton type="button" size="small" component="spam" onClick={addProducto}>
-                                    <AddShoppingCartIcon />
-                                </IconButton>
                             </Grid>
                             <Grid item xs={6} md={0.75}>
 
                             </Grid>
+                            <Grid item xs={6} md={0.75}>
+                                <IconButton type="submit" size="small" component="spam" onClick={addProducto}>
+                                    <AddShoppingCartIcon />
+                                </IconButton>
+                            </Grid>
                         </Grid>
                     </Box>
                 </form>
+
+                <ListadoProductos listado={carrito} funcionEliminar = {(id) => eliminarProducto(id)}/>
+
+              </TableContainer>
             </Paper>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            '& > :not(style)': {
+              m: 1,
+              width: 200,
+              maxHeight: 175,
+              padding: 1,
+              margin: '-60px 0 0 -120px'
+            }
+          }}
+        >
+          <Paper elevation={6} >
+            <TextField label="Total sin IVA:" color="info" focused id="totalVenta" name="ventaSinIVA" placeholder="total sin IVA" value={'$ ' + currentTotal} margin="dense" size="small" />
+            <TextField label="IVA:" color="info" focused id="totalVenta" name="IVA" placeholder="totalVenta" value={'$ ' + currentTotal} margin="dense" size="small" />
+            <TextField label="Total:" color="info" focused id="totalVenta" name="totalVenta" placeholder="totalVenta" value={'$ ' + currentTotal} margin="dense" size="small" />
+          </Paper>
         </Box>
     </>
 }

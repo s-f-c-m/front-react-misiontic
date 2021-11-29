@@ -8,7 +8,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 // import { useState } from 'react'
 // import axios from 'axios'
 
-export default function ListadoProductos ({ listado, ...props }) {
+export default function ListadoProductos ({ listado, funcionEliminar, ...props }) {
   return <>
 
         {
@@ -19,7 +19,7 @@ export default function ListadoProductos ({ listado, ...props }) {
                         <Box sx={{ flexGrow: 1, margin: '20px' }}>
                             <Grid container spacing={1}>
                                 <Grid item xs={6} md={0.5}>
-                                    <label name="consecutivo">{index}</label>
+                                    <label name="consecutivo">{index + 1}</label>
                                 </Grid>
                                 <Grid item xs={6} md={2}>
                                     <Input value = {producto.key} margin="normal" size="small" disabled />
@@ -40,7 +40,7 @@ export default function ListadoProductos ({ listado, ...props }) {
 
                                 </Grid>
                                 <Grid item xs={6} md={0.75}>
-                                    <IconButton name = {producto.key} type="button" size="small" component="spam">
+                                    <IconButton id = {producto.key} value = {producto.key} type="button" size="small" component="spam" onClick = {(e) => { funcionEliminar(document.getElementById(producto.key).value) }}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </Grid>
