@@ -34,7 +34,7 @@ export default function ListadoProductos ({ listado, funcionEliminar, ...props }
                                     <Input type="number" value = {producto.data.cantidad} margin="normal" size="small" disabled />
                                 </Grid>
                                 <Grid item xs={6} md={2.25}>
-                                    <Input value = {producto.data.total} startAdornment={<InputAdornment position="start">$</InputAdornment>} margin="normal" size="small" disabled />
+                                    <Input value = {producto.data.totalProducto} startAdornment={<InputAdornment position="start">$</InputAdornment>} margin="normal" size="small" disabled />
                                 </Grid>
                                 <Grid item xs={6} md={0.75}>
 

@@ -4,7 +4,7 @@ import { useState, useRef } from 'react'
 import Grid from '@mui/material/Grid'
 import axios from 'axios'
 import InputAdornment from '@mui/material/InputAdornment'
-import { Input } from '@mui/material'
+import { Button, Input } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import SearchIcon from '@mui/icons-material/Search'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
@@ -43,11 +43,17 @@ export default function FormVentas (props) {
   const [codigoProducto, setCodigoProducto] = useState()
   const [nombreProducto, setNombreProducto] = useState('')
   const [cantidadProducto, setCantidadProducto] = useState(0)
-  const [valorTotalProducto, setValorTotalProducto] = useState('0') // cantidad por valor unitario (incluye IVA)
-  const [totalVenta, setTotalVenta] = useState(0)
-  const [currentTotal, setCurrentTotal] = useState(totalVenta)
+  const [valorTotalProducto, setValorTotalProducto] = useState(0) // cantidad X valor unitario (no incluye IVA)
+  const [totalIvaProducto, setTotalIvaProducto] = useState(0) // cantidad X (valorProducto * ivaProducto/100)
+  const [ivaVenta, setIvaVenta] = useState(0)
+  const [valorTotalVenta, setvalorTotalVenta] = useState(0) // valor total de la venta hasta el momento sin IVA
 
-  const valorProducto = useRef(0) // valor unitario del producto
+  // estados Auxiliares:
+  const [currentTotal, setCurrentTotal] = useState(valorTotalVenta) // valor para mostrar en pantalla sin IVA
+  const [currentTotalIvaVenta, setCurrentTotalIvaVenta] = useState(ivaVenta)
+
+  const valorProducto = useRef(0) // valor unitario del producto sin IVA
+  const ivaProducto = useRef(0)
 
   // console.log("---cantidad del producto:" + cantidadProducto)
   // console.log("---valor del producto" + valorProducto.current)
@@ -73,6 +79,7 @@ export default function FormVentas (props) {
         { headers }
       )
       setNombreProducto(data.nombreProducto)
+      ivaProducto.current = data.ivaCompra
       valorProducto.current = data.precioVenta
     } catch {
       alert('producto no encontrado')
@@ -90,16 +97,20 @@ export default function FormVentas (props) {
         data: {
           nombre: nombreProducto,
           cantidad: cantidadProducto,
-          total: valorTotalProducto
+          totalProducto: valorTotalProducto,
+          valorTotalIVAdelProducto: totalIvaProducto,
+          valorVentaProducto: valorTotalProducto + totalIvaProducto
         }
       }])
     valorProducto.current = 0
-    setTotalVenta(currentTotal)
+    ivaProducto.current = 0
+    setvalorTotalVenta(currentTotal)
+    setIvaVenta(currentTotalIvaVenta)
+    setTotalIvaProducto(0)
     setCodigoProducto('')
     setNombreProducto('')
     setCantidadProducto(0)
     setValorTotalProducto(0)
-    console.log(carrito)
   }
 
   // const listaPrueba = [
@@ -124,6 +135,56 @@ export default function FormVentas (props) {
     setCarrito(newCarrito)
   }
 
+  // Registrar Venta y detalleVenta:
+
+  const registrarVenta = async () => {
+    const listaDetalleVenta = []
+    carrito.map(prod => {
+      listaDetalleVenta.push({
+        codigo_producto: prod.key,
+        cantidad_producto: prod.data.cantidad,
+        valor_total: prod.data.totalProducto,
+        valoriva: prod.data.valorTotalIVAdelProducto,
+        valor_venta: prod.data.valorVentaProducto
+      })
+      return 0
+    })
+
+    const headers = {
+      'Content-Type': 'application/json'
+    }
+
+    try {
+      await axios.post(
+        'http://localhost:8087/api/v1/detalleVentas/',
+        JSON.stringify(listaDetalleVenta),
+        { headers }
+      )
+    } catch {
+      alert('no se pudo ingresar los detalles de la venta')
+    }
+
+    try {
+      await axios.post(
+        'http://localhost:8087/api/v1/ventas/',
+        JSON.stringify({
+          cedula_cliente: cedula,
+          detalle_venta: listaDetalleVenta,
+          total_venta: valorTotalVenta,
+          ivaventa: ivaVenta,
+          valor_venta: valorTotalVenta + ivaVenta
+        }),
+        { headers }
+      )
+      alert('venta registrada con éxito')
+    } catch {
+      alert('no se pudo ingresar la venta')
+    }
+
+    setvalorTotalVenta(0)
+    setIvaVenta(0)
+  }
+
 
   return <>
         <Box
@@ -132,13 +193,13 @@ export default function FormVentas (props) {
               flexWrap: 'wrap',
               '& > :not(style)': {
                 m: 1,
-                maxWidth: 1000
+                maxWidth: 1000,
+                height: 450
               }
             }}
         >
             <Paper elevation={12} sx={{ background: 'E0F7FA', padding: '20px' }}>
-            <TableContainer sx={{ maxHeight: 440 }}>
-                <form onSubmit={handleSubmitFormCliente} ref={refForm}>
+                <form ref={refForm}>
                     <Box sx={{ flexGrow: 1, margin: '20px 20px 40px 20px', justifyContent: 'center' }}>
                         <Grid container spacing={1}>
                             <Grid item xs={6} md={3}>
@@ -146,10 +207,9 @@ export default function FormVentas (props) {
                                     onChange={(e) => setCedula(e.target.value)} margin="normal" size="small" />
                             </Grid>
                             <Grid item xs={6} md={1}>
-                                <IconButton size="small" component="spam">
+                                <IconButton type = "button" size="small" component="spam" onClick = {handleSubmitFormCliente}>
                                     <PersonSearchIcon />
                                 </IconButton>
-                                <button type="submit"><PersonSearchIcon /></button>
                             </Grid>
                             <Grid item xs={6} md={3}>
                                 <Input name="nombre" placeholder="Nombre del cliente" value={name} margin="normal" size="small" />
@@ -181,10 +241,15 @@ export default function FormVentas (props) {
                             <Grid item xs={6} md={1.5}>
                                 <Input name="cantidad" type="number" placeholder="cantidad" margin="normal" size="small" pattern='[0-9]*' value = {cantidadProducto} onChange={(e) => {
                                   setCantidadProducto(e.target.value)
-                                  setValorTotalProducto(e.target.value * valorProducto.current)
+                                  const totalProductoSinIVA = e.target.value * valorProducto.current
+                                  const totalIVA = totalProductoSinIVA * ivaProducto.current / 100
+                                  setValorTotalProducto(totalProductoSinIVA)
+                                  setTotalIvaProducto(totalIVA)
                                   setCantidadProducto(e.target.value)
-                                  const valor = totalVenta + e.target.value * valorProducto.current
-                                  setCurrentTotal(valor)
+                                  const valorVentaSinIVA = valorTotalVenta + totalProductoSinIVA
+                                  const totalIvaVenta = ivaVenta + totalIVA
+                                  setCurrentTotal(valorVentaSinIVA)
+                                  setCurrentTotalIvaVenta(totalIvaVenta)
                                 }} required/>
                             </Grid>
                             <Grid item xs={6} md={2.25}>
@@ -202,10 +267,21 @@ export default function FormVentas (props) {
                     </Box>
                 </form>
 
+                <TableContainer sx={{ height: 200 }}>
                 <ListadoProductos listado={carrito} funcionEliminar = {(id) => eliminarProducto(id)}/>
-
               </TableContainer>
+
+                <Box sx={{ flexGrow: 1, margin: '20px 40px 0 0' }}>
+                  <Grid container spacing={1}>
+                    <Grid item style={{ marginLeft: 'auto' }} >
+                      <Button onClick = { registrarVenta }>
+                        Aceptar
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Box>
             </Paper>
+
         </Box>
         <Box
           sx={{
@@ -216,14 +292,14 @@ export default function FormVentas (props) {
               width: 200,
               maxHeight: 175,
               padding: 1,
-              margin: '-60px 0 0 -120px'
+              margin: '-75px 0 0 -280px'
             }
           }}
         >
           <Paper elevation={6} >
-            <TextField label="Total sin IVA:" color="info" focused id="totalVenta" name="ventaSinIVA" placeholder="total sin IVA" value={'$ ' + currentTotal} margin="dense" size="small" />
-            <TextField label="IVA:" color="info" focused id="totalVenta" name="IVA" placeholder="totalVenta" value={'$ ' + currentTotal} margin="dense" size="small" />
-            <TextField label="Total:" color="info" focused id="totalVenta" name="totalVenta" placeholder="totalVenta" value={'$ ' + currentTotal} margin="dense" size="small" />
+            <TextField label="Total sin IVA:" color="secondary" name="ventaSinIVA" placeholder="total sin IVA" value={'$ ' + currentTotal} margin="dense" size="small" />
+            <TextField label="IVA:" color="secondary" name="IVA" placeholder="valorTotalVenta" value={'$ ' + currentTotalIvaVenta} margin="dense" size="small" />
+            <TextField label="Total:" color="warning" focused id="valorTotalVenta" name="valorTotalVenta" placeholder="valorTotalVenta" value={'$ ' + (currentTotal + currentTotalIvaVenta)} margin="dense" size="small" />
           </Paper>
         </Box>
     </>
