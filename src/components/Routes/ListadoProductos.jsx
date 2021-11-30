@@ -40,7 +40,7 @@ export default function ListadoProductos ({ listado, funcionEliminar, ...props }
 
                                 </Grid>
                                 <Grid item xs={6} md={0.75}>
-                                    <IconButton id = {producto.key} value = {producto.key} type="button" size="small" component="spam" onClick = {(e) => { funcionEliminar(document.getElementById(producto.key).value) }}>
+                                    <IconButton id = {producto.key} value = {producto.key} type="button" size="small" component="spam" onClick = {(e) => { funcionEliminar(producto.key) }}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </Grid>

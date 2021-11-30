@@ -130,6 +130,7 @@ export default function FormVentas (props) {
 
   // Eliminar producto del carrito:
   const eliminarProducto = (id) => {
+    console.log(JSON.stringify(carrito))
     const newCarrito = carrito.filter((product) => product.key !== id)
     setCarrito(newCarrito)
   }
