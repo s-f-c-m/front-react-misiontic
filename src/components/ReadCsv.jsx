@@ -1,9 +1,9 @@
 import { useRef } from 'react'
 import Input from './Input'
 import Button from './Button'
-import axios from 'axios'
-import Tabla from './componentesTienda/tablaInfo/Tabla'
 import useLoadCsv from '../hooks/useLoadCsv'
+import BasicTable from './DataTable/BasicTable'
+import productosService from '../services/productos'
 
 const ReadCsv = () => {
   const [csvArray, loadCsv, clearCsvArray] = useLoadCsv()
@@ -14,23 +14,43 @@ const ReadCsv = () => {
     inputFile.current.value = ''
   }
 
-  const handlePostProductos = async () => {
-    const body = JSON.stringify(csvArray)
-    const headers = {
-      'Content-Type': 'application/json'
+  const headers = [
+    {
+      id: 'codigoProducto',
+      label: 'Código Producto'
+    },
+    {
+      id: 'ivaCompra',
+      label: 'Iva Compra'
+    },
+    {
+      id: 'nitProveedor',
+      label: 'Nit Proveedor'
+    },
+    {
+      id: 'nombreProducto',
+      label: 'Nombre del Producto'
+    },
+    {
+      id: 'precioCompra',
+      label: 'Precio Compra'
+    },
+    {
+      id: 'precioVenta',
+      label: 'Precio Venta'
     }
-    try {
-      await axios.post(
-        'http://localhost:8085/api/productos',
-        body,
-        { headers }
-      )
-    } catch {
-      alert('Error al cargar')
-      return
-    }
-    alert('Carga exitosa')
-    clearTable()
+  ]
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log(csvArray)
+    productosService.postProductos(csvArray).then(() => {
+      alert('productos cargados exitosamente')
+    }).catch(() => {
+      alert('error al cargar uno o más productos')
+    }).finally(() => {
+      clearTable()
+    })
   }
 
   const styles = {
@@ -59,8 +79,8 @@ const ReadCsv = () => {
 
       {csvArray.length > 0 && (
         <>
-          <Tabla tituloTabla="Productos" documentos={csvArray} />
-          <Button onClick={handlePostProductos}>
+          <BasicTable data={csvArray} headers={headers}/>
+          <Button onClick={handleSubmit}>
             Enviar
           </Button>
         </>

@@ -15,7 +15,6 @@ import TableContainer from '@mui/material/TableContainer'
 import TextField from '@mui/material/TextField'
 // import Fab from '@mui/material/Fab'
 
-
 export default function FormVentas (props) {
   /// / scripts para buscar el cliente:
   const [cedula, setCedula] = useState()
@@ -184,7 +183,6 @@ export default function FormVentas (props) {
     setvalorTotalVenta(0)
     setIvaVenta(0)
   }
-
 
   return <>
         <Box

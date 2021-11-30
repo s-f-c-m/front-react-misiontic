@@ -21,6 +21,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'react/prop-types': 'off',
-    'no-multiple-empty-lines': [1,{"max":1}]
+    'no-multiple-empty-lines': [1, { max: 1 }]
   }
 }

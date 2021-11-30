@@ -175,6 +175,7 @@ export default function DataTable (props) {
           component="div"
           count={data.length}
           rowsPerPage={rowsPerPage}
+          labelRowsPerPage='Filas por página'
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}

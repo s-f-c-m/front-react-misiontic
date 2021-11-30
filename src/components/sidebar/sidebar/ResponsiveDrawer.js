@@ -15,7 +15,7 @@ import { ThemeContext } from '../../../theme/ThemeContext'
 import NavLink from '../menus/NavLink'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
 import PersonIcon from '@mui/icons-material/Person'
-// import { SessionContext } from '../../../auth/session'
+import ButtonLogout from '../../ButtonLogout'
 const drawerWidth = 240
 function ResponsiveDrawer ({ children, window, ...props }) {
   console.log(props)
@@ -62,7 +62,10 @@ function ResponsiveDrawer ({ children, window, ...props }) {
           <Typography variant="h6" noWrap component="div">
             Tienda Genérica
           </Typography>
-          <ButtonTheme style={{ alignSelf: 'center' }} />
+          <div style={{ display: 'flex' }}>
+            <ButtonTheme style={{ alignSelf: 'center' }} />
+            <ButtonLogout style={{ alignSelf: 'center' }} />
+          </div>
         </Toolbar>
       </AppBar>
       <Box
