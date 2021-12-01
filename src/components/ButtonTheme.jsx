@@ -19,6 +19,7 @@ justify-content: ${(props) => props.theme.iconPosition};
 align-items: center;
 padding: 5px 10px;
 transition: all 0.5 ease;
+cursor: pointer;
 
 &:focus{
   outline: none;
