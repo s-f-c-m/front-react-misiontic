@@ -75,17 +75,15 @@ const DataTableUsuarios = () => {
     setFilteredData(data.filter((x) => Object.values(x).toString().toLowerCase().includes(search.toLowerCase())))
   }, [search, data])
 
-  const deleteCliente = (arrayToDelete) => {
+  const deleteUsuario = (arrayToDelete) => {
     const promises = []
     arrayToDelete.forEach(x => {
       promises.push(
-        x
-        // serviceUsuarios.deleteCliente(x)
+        serviceUsuarios.deleteUsuario(x)
       )
     })
     Promise.all(promises).then(() => {
       setMessage({ open: true, severity: 'success', message: 'Registros eliminados satisfactoriamente' })
-      // alert('registros eliminados')
     }).catch(() => {
       setMessage({ open: true, severity: 'error', message: 'Error al eliminar uno o más registros' })
     }).finally(() => {
@@ -111,7 +109,7 @@ const DataTableUsuarios = () => {
     selected={selected}
     setSelected={setSelected}
     form={<FormUsuarios flagToUpdate={flagToUpdate} setFlagToUpdate={setFlagToUpdate} />}
-    deleteFunction={deleteCliente}
+    deleteFunction={deleteUsuario}
     />
     </>
   )

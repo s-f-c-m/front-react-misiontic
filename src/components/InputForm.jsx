@@ -20,7 +20,7 @@ const InputForm = ({ label, ...props }) => {
     <>
       <Wrapper>
         <label htmlFor={props.name}>{label}</label>
-        <Input id={props.name} {...field} {...props} required />
+        <Input id={props.name} {...field} {...props} />
       </Wrapper>
       {meta.touched && meta.error && <div>{meta.error}</div>}
     </>

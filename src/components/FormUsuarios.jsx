@@ -5,7 +5,6 @@ import Button from './Button'
 import { Formik, Form } from 'formik'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
-// import Stack from '@mui/material/Stack'
 import serviceUsuarios from '../services/usuarios'
 
 export default function FormUsuarios (props) {
@@ -27,16 +26,17 @@ export default function FormUsuarios (props) {
   const [passerror, setPasserror] = useState(false)
 
   const handleSubmitsForm = async (values) => {
+    if (values.password !== values.passwordconfirm) {
+      setPasserror(true)
+      setTimeout(() => {
+        setPasserror(false)
+      }, 2500)
+      return
+    }
     const op = httpAction
+    const promises = []
     switch (op) {
       case 'register':
-        if (values.password !== values.passwordconfirm) {
-          setPasserror(true)
-          setTimeout(() => {
-            setPasserror(false)
-          }, 2500)
-          break
-        }
         serviceUsuarios.postUsuario(values).then(() => {
           setMessage({ severity: 'success', title: 'Usuario Agregado', message: 'Se agregó el usuario satisfactoriamente' })
         }).catch(() => {
@@ -46,7 +46,11 @@ export default function FormUsuarios (props) {
         })
         break
       case 'update':
-        serviceUsuarios.putUsuario(values).then(() => {
+        if (values.password !== '') {
+          promises.push(serviceUsuarios.putUsuarioPassword({ user: values.user, password: values.password }))
+        }
+        promises.push(serviceUsuarios.putUsuarioNombre({ user: values.user, name: values.name }))
+        Promise.all(promises).then(() => {
           setMessage({ severity: 'success', title: 'Usuario Modificado', message: 'Se modificó el usuario satisfactoriamente' })
         }).catch(() => {
           setMessage({ severity: 'error', title: 'Error Modificar', message: 'Ocurrió un error al modificar el usuario. Intente de nuevo o comuníquese con el administrador' })
@@ -62,7 +66,12 @@ export default function FormUsuarios (props) {
   useEffect(() => {
     if (selected.length === 1) {
       serviceUsuarios.getUsuario(selected[0]).then((data) => {
-        setFormulario(data)
+        setFormulario({
+          ...formulario,
+          user: data.user,
+          name: data.name,
+          email: data.email
+        })
       }).catch(() => {
         alert('Error al consultar usuario')
       }).finally(() => {
@@ -105,29 +114,35 @@ export default function FormUsuarios (props) {
               name='user'
               placeholder='Usuario'
               disabled={isCliente}
+              required='required'
             />
             <InputForm
               label='Nombre'
               name='name'
               placeholder='Nombre del usuario'
+              required='required'
             />
             <InputForm
               label='Email'
               name='email'
               type='email'
               placeholder='Email del usuario'
+              disabled={isCliente}
+              required='required'
             />
             <InputForm
               label='Contraseña'
               name='password'
               type='password'
               placeholder='Contraseña'
+              required={isCliente ? '' : 'required'}
             />
             <InputForm
-              label='Confirmar Contraseña'
+              label='Confirmar'
               name='passwordconfirm'
               type='password'
-              placeholder='Confirmar'
+              placeholder='Confirmar contraseña'
+              required={isCliente ? '' : 'required'}
             />
             <div style={{ display: 'flex', gap: '5px', 'justify-content': 'space-between' }} >
               {!isCliente &&

@@ -5,7 +5,6 @@ import Button from './Button'
 import { Formik, Form } from 'formik'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
-// import Stack from '@mui/material/Stack'
 import serviceClientes from '../services/clientes'
 
 export default function FormClientes (props) {
@@ -89,27 +88,32 @@ export default function FormClientes (props) {
               name='cedulaCliente'
               placeholder='Cédula del cliente'
               disabled={isCliente}
+              required='required'
             />
             <InputForm
               label='Nombre'
               name='nombreCliente'
               placeholder='Nombre del Cliente'
+              required='required'
             />
             <InputForm
               label='Email'
               name='emailCliente'
               type='email'
               placeholder='Email del cliente'
+              required='required'
             />
             <InputForm
               label='Dirección'
               name='direccionCliente'
               placeholder='Dirección del cliente'
+              required='required'
             />
             <InputForm
               label='Teléfono'
               name='telefonoCliente'
               placeholder='Teléfono del cliente'
+              required='required'
             />
             <div style={{ display: 'flex', gap: '5px', 'justify-content': 'space-between' }} >
               {!isCliente &&
