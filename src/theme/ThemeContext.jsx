@@ -3,14 +3,15 @@ import React, { createContext, useReducer } from 'react'
 const ThemeContext = createContext()
 
 const defaultTheme = {
-  light: false,
-  mainColor1: '#289dff',
-  mainColor2: '#ff8a28',
+  light: true,
+  mainColor1: '#4a73b5',
+  mainColor1Shadow2: '#5584d0',
+  mainColor1Shadow1: '#3f629a',
+  mainColor2: '#d2a65e',
+  mainColor2Hover: '#cc6e21',
   secondaryColor1: '#7bc3ff',
-  mainColor1Shadow1: '#2285d9',
-  mainColor1Shadow2: '#2eb5ff',
-  icon: 'fa fa-sun-o',
-  iconPosition: 'flex-start'
+  icon: 'fa fa-moon-o',
+  iconPosition: 'flex-end'
 }
 
 const themeReducer = (state, action) => {
@@ -23,6 +24,7 @@ const themeReducer = (state, action) => {
           mainColor1Shadow2: '#5584d0',
           mainColor1Shadow1: '#3f629a',
           mainColor2: '#d2a65e',
+          mainColor2Hover: '#cc6e21',
           secondaryColor1: '#7bc3ff',
           icon: 'fa fa-moon-o',
           iconPosition: 'flex-end'
@@ -34,6 +36,7 @@ const themeReducer = (state, action) => {
           light: false,
           mainColor1: '#289dff',
           mainColor2: '#ff8a28',
+          mainColor2Hover: '#cc6e21',
           secondaryColor1: '#7bc3ff',
           mainColor1Shadow1: '#2285d9',
           mainColor1Shadow2: '#2eb5ff',

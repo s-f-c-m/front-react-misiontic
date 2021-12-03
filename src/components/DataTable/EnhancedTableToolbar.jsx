@@ -25,11 +25,25 @@ const EnhancedTableToolbar = (props) => {
   const handleFormOpen = () => setFormOpen(true)
   const handleFormClose = () => setFormOpen(false)
 
+  console.log(props.showControls)
+  let showControls
+
+  if (props.showControls === undefined) {
+    showControls = true
+  } else {
+    showControls = props.showControls
+  }
+
   const handleSearch = (e) => {
     setSearch(e.target.value)
   }
 
-  const formFinal = cloneElement(form, { selected: selected })
+  let formFinal
+  if (form) {
+    formFinal = cloneElement(form, { selected: selected })
+  } else {
+    formFinal = {}
+  }
 
   return (
     <>
@@ -67,7 +81,7 @@ const EnhancedTableToolbar = (props) => {
 
           <input style={{ flex: '1 1 100%' }} placeholder='Buscar' value={search} onChange={handleSearch}/>
           <div style={{ display: 'flex', width: '100%', justifyContent: 'flex-end' }}>
-        {numSelected > 0
+        {showControls && numSelected > 0
           ? (
               <Tooltip title="Delete">
                 <IconButton onClick={() => deleteFunction(selected)}>
@@ -75,15 +89,15 @@ const EnhancedTableToolbar = (props) => {
                 </IconButton>
               </Tooltip>
             )
-          : (
+          : showControls && (
               <Tooltip title="Add">
                 <IconButton onClick={handleFormOpen}>
                   <AddIcon />
                 </IconButton>
               </Tooltip>
-            )
+          )
         }
-        { numSelected === 1 &&
+        { showControls && numSelected === 1 &&
           (
               <Tooltip title="Edit">
                 <IconButton onClick={handleFormOpen}>

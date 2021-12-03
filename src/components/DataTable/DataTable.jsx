@@ -45,7 +45,9 @@ export default function DataTable (props) {
   const [orderBy, setOrderBy] = useState('calories')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
-  const { data, headCells, search, setSearch, title, selected, setSelected, form, deleteFunction } = props
+  const { data, headCells, search, setSearch, title, selected, setSelected, form, deleteFunction, showControls } = props
+
+  console.log(showControls)
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -107,6 +109,7 @@ export default function DataTable (props) {
           title={title}
           form={form}
           deleteFunction={deleteFunction}
+          showControls={showControls}
         />
         <TableContainer>
           <Table
@@ -122,6 +125,7 @@ export default function DataTable (props) {
               onRequestSort={handleRequestSort}
               rowCount={data.length}
               headCells={headCells}
+              showControls={showControls}
             />
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
@@ -145,16 +149,18 @@ export default function DataTable (props) {
                       key={id}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId
-                          }}
-                        />
-                      </TableCell>
-                    { k.map((x, i) => <TableCell key={i} align='center'>{x}</TableCell>) }
+                  {(showControls || showControls === undefined) &&
+                  <TableCell padding="checkbox">
+                  <Checkbox
+                  color="primary"
+                  checked={isItemSelected}
+                  inputProps={{
+                    'aria-labelledby': labelId
+                  }}
+                  />
+                  </TableCell>
+                  }
+                    { k.map((x, i) => <TableCell key={i} align='left'>{x}</TableCell>) }
                     </TableRow>
                   )
                 })}

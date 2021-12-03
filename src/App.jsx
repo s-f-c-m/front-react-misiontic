@@ -14,6 +14,7 @@ import ResponsiveDrawer from './components/sidebar/sidebar/ResponsiveDrawer'
 import FormVentas from './components/Routes/FormVentas'
 import Clientes from './pages/Clientes'
 import Usuarios from './pages/Usuarios'
+import Reportes from './pages/Reportes'
 
 function App () {
   const slideCard = useRef()
@@ -65,6 +66,13 @@ function App () {
             <ResponsiveDrawer>
               <>
                 <FormVentas />
+              </>
+            </ResponsiveDrawer>
+          } />
+          <Route path='/reportes' element={
+            <ResponsiveDrawer>
+              <>
+                <Reportes />
               </>
             </ResponsiveDrawer>
           } />
