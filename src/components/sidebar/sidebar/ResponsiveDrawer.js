@@ -14,27 +14,27 @@ import ButtonTheme from '../../ButtonTheme'
 import { ThemeContext } from '../../../theme/ThemeContext'
 import NavLink from '../menus/NavLink'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
-import PersonIcon from '@mui/icons-material/Person'
 import ButtonLogout from '../../ButtonLogout'
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
+import TableChartIcon from '@mui/icons-material/TableChart'
+import GroupIcon from '@mui/icons-material/Group'
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
+
 const drawerWidth = 240
 function ResponsiveDrawer ({ children, window, ...props }) {
-  console.log(props)
   const [mobileOpen, setMobileOpen] = React.useState(false)
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
   }
-  const clientesIcon = <PersonIcon />
-  const productosIcon = <UploadFileIcon />
   // const [session, setSession] = useContext(SessionContext)
   const drawer = (
     <div>
       <Toolbar />
-      <NavLink link='/productos' icon={productosIcon} >Productos</NavLink>
-      <NavLink link='/clientes' icon={clientesIcon}>Clientes</NavLink>
-      <NavLink link='/usuarios' icon={clientesIcon}>Usuarios</NavLink>
-      <NavLink link='/ventas' icon={clientesIcon}>Ventas</NavLink>
-      <NavLink link='/reportes' icon={clientesIcon}>Reportes</NavLink>
-      {/* <Link to='/clientes'>Clientes</Link> */}
+      <NavLink link='/productos' icon={<UploadFileIcon />} >Productos</NavLink>
+      <NavLink link='/clientes' icon={<GroupIcon />}>Clientes</NavLink>
+      <NavLink link='/usuarios' icon={<SupervisedUserCircleIcon />}>Usuarios</NavLink>
+      <NavLink link='/ventas' icon={<AttachMoneyIcon />}>Ventas</NavLink>
+      <NavLink link='/reportes' icon={<TableChartIcon />}>Reportes</NavLink>
       {/* <AccordionSummary /> */}
     </div>
   )
