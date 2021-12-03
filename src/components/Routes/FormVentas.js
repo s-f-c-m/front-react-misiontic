@@ -14,6 +14,7 @@ import TableContainer from '@mui/material/TableContainer'
 // import InputLabel from '@mui/material/InputLabel'
 import TextField from '@mui/material/TextField'
 // import Fab from '@mui/material/Fab'
+import ventasServices from '../../services/ventas'
 
 export default function FormVentas (props) {
   /// / scripts para buscar el cliente:
@@ -66,17 +67,10 @@ export default function FormVentas (props) {
   //   }
   // }
 
-  const buscarProducto = async (e) => {
+  const buscar = (e) => {
     e.preventDefault()
-    const headers = {
-      'Content-Type': 'application/json'
-    }
-
     try {
-      const { data } = await axios.get(
-        'http://localhost:8085/api/v1/productos/' + codigoProducto,
-        { headers }
-      )
+      const data = ventasServices.buscarProducto(codigoProducto)
       setNombreProducto(data.nombreProducto)
       ivaProducto.current = data.ivaCompra
       valorProducto.current = data.precioVenta
@@ -137,7 +131,7 @@ export default function FormVentas (props) {
 
   // Registrar Venta y detalleVenta:
 
-  const registrarVenta = async () => {
+  const registrar = () => {
     const listaDetalleVenta = []
     carrito.map(prod => {
       listaDetalleVenta.push({
@@ -150,36 +144,15 @@ export default function FormVentas (props) {
       return 0
     })
 
-    const headers = {
-      'Content-Type': 'application/json'
-    }
+    ventasServices.registrarDetalleVentas(listaDetalleVenta)
 
-    try {
-      await axios.post(
-        'http://localhost:8087/api/v1/detalleVentas/',
-        JSON.stringify(listaDetalleVenta),
-        { headers }
-      )
-    } catch {
-      alert('no se pudo ingresar los detalles de la venta')
-    }
-
-    try {
-      await axios.post(
-        'http://localhost:8087/api/v1/ventas/',
-        JSON.stringify({
-          cedula_cliente: cedula,
-          detalle_venta: listaDetalleVenta,
-          total_venta: valorTotalVenta,
-          ivaventa: ivaVenta,
-          valor_venta: valorTotalVenta + ivaVenta
-        }),
-        { headers }
-      )
-      alert('venta registrada con éxito')
-    } catch {
-      alert('no se pudo ingresar la venta')
-    }
+    ventasServices.registrarVenta({
+      cedula_cliente: cedula,
+      detalle_venta: listaDetalleVenta,
+      total_venta: valorTotalVenta,
+      ivaventa: ivaVenta,
+      valor_venta: valorTotalVenta + ivaVenta
+    })
 
     setvalorTotalVenta(0)
     setIvaVenta(0)
@@ -230,7 +203,7 @@ export default function FormVentas (props) {
                                     onChange={(e) => setCodigoProducto(e.target.value)} margin="normal" size="small" required/>
                             </Grid>
                             <Grid item xs={6} md={1}>
-                                <IconButton type="button" size="small" component="spam" onClick={buscarProducto}>
+                                <IconButton type="button" size="small" component="spam" onClick={buscar}>
                                     <SearchIcon />
                                 </IconButton>
                             </Grid>
@@ -273,7 +246,7 @@ export default function FormVentas (props) {
                 <Box sx={{ flexGrow: 1, margin: '20px 40px 0 0' }}>
                   <Grid container spacing={1}>
                     <Grid item style={{ marginLeft: 'auto' }} >
-                      <Button onClick = { registrarVenta }>
+                      <Button onClick = { registrar }>
                         Aceptar
                       </Button>
                     </Grid>
