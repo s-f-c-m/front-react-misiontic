@@ -14,7 +14,7 @@ import ResponsiveDrawer from './components/sidebar/sidebar/ResponsiveDrawer'
 import FormVentas from './components/Routes/FormVentas'
 import Clientes from './pages/Clientes'
 import Usuarios from './pages/Usuarios'
-// import reporteUtils from '../../utils/reportes'
+import reporteUtils from './utils/reportes'
 
 function App () {
   const slideCard = useRef()
@@ -25,7 +25,12 @@ function App () {
   }, [])
 
   // prueba reportes:
-  // console.log(reporteUtils.ventasPorCliente())
+  const pruebaReportes = async () => {
+    const data = await reporteUtils.ventasPorCliente()
+    console.log('Reporte ventas por CLiente: ' + JSON.stringify(data))
+  }
+
+  pruebaReportes()
 
   return (
     <Content>

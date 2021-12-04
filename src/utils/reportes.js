@@ -1,9 +1,9 @@
 import clienteServices from '../services/clientes'
 import ventasServices from '../services/ventas'
 
-const ventasPorCliente = () => {
-  const arrayClientes = clienteServices.getAll()
-  const arrayVentas = ventasServices.getAllVentas()
+const ventasPorCliente = async () => {
+  const arrayClientes = await clienteServices.getAll()
+  const arrayVentas = await ventasServices.getAllVentas()
   const reporte = []
 
   arrayClientes.map(cliente => {
