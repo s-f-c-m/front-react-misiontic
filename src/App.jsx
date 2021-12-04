@@ -14,6 +14,7 @@ import ResponsiveDrawer from './components/sidebar/sidebar/ResponsiveDrawer'
 import FormVentas from './components/Routes/FormVentas'
 import Clientes from './pages/Clientes'
 import Usuarios from './pages/Usuarios'
+// import reporteUtils from '../../utils/reportes'
 
 function App () {
   const slideCard = useRef()
@@ -22,6 +23,9 @@ function App () {
   useEffect(() => {
     tl.fromTo('.slidingCard', { x: 0 }, { x: -240, duration: 1.5 })
   }, [])
+
+  // prueba reportes:
+  // console.log(reporteUtils.ventasPorCliente())
 
   return (
     <Content>
