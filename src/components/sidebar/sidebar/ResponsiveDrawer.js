@@ -19,6 +19,8 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import TableChartIcon from '@mui/icons-material/TableChart'
 import GroupIcon from '@mui/icons-material/Group'
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
+import Avatar from '@mui/material/Avatar'
+import { SessionContext } from '../../../auth/session'
 
 const drawerWidth = 240
 function ResponsiveDrawer ({ children, window, ...props }) {
@@ -26,7 +28,9 @@ function ResponsiveDrawer ({ children, window, ...props }) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
   }
-  // const [session, setSession] = useContext(SessionContext)
+  const [session] = useContext(SessionContext)
+  console.log(session)
+
   const drawer = (
     <div>
       <Toolbar />
@@ -66,6 +70,7 @@ function ResponsiveDrawer ({ children, window, ...props }) {
           <div style={{ display: 'flex' }}>
             <ButtonTheme style={{ alignSelf: 'center' }} />
             <ButtonLogout style={{ alignSelf: 'center' }} />
+            <Avatar sx={{ bgcolor: theme.state.mainColor2 }} alt={session.sub} src='../notwork.jpg'/>
           </div>
         </Toolbar>
       </AppBar>

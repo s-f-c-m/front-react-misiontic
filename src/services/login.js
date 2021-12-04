@@ -24,7 +24,6 @@ const isAuhtenticated = async () => {
       'http://localhost:8082/login/validate',
       { headers }
     )
-    console.log(data)
     return data
   } catch {
     return { error: 'Not authorized' }

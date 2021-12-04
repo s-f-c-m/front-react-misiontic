@@ -6,6 +6,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import { ThemeContext } from '../theme/ThemeContext'
 import { styled } from '@mui/material/styles'
 import Paper from '@mui/material/Paper'
+import reporteUtils from '../utils/reportes'
 
 const CustomToggleButtonGroup = styled(ToggleButtonGroup)`
 background-color: ${(props) => props.theme.mainColor2};
@@ -50,12 +51,12 @@ const headCellsClientes = [
 
 const headCellsVentas = [
   {
-    id: 'cedulaCliente',
+    id: 'cedula',
     numeric: false,
     label: 'Cédula Cliente'
   },
   {
-    id: 'nombreCliente',
+    id: 'nombre',
     numeric: false,
     label: 'Nombre Cliente'
   },
@@ -67,25 +68,25 @@ const headCellsVentas = [
 
 ]
 
-const ventasData = [
-  {
-    cedulaCliente: 15151515,
-    nombreCliente: 'cliente 1',
-    totalVentas: 55525
+// const ventasData = [
+//   {
+//     cedulaCliente: 15151515,
+//     nombreCliente: 'cliente 1',
+//     totalVentas: 55525
 
-  },
-  {
-    cedulaCliente: 54765465,
-    nombreCliente: 'cliente 2',
-    totalVentas: 88888
+//   },
+//   {
+//     cedulaCliente: 54765465,
+//     nombreCliente: 'cliente 2',
+//     totalVentas: 88888
 
-  },
-  {
-    cedulaCliente: 7987997,
-    nombreCliente: 'cliente 3',
-    totalVentas: 98899
-  }
-]
+//   },
+//   {
+//     cedulaCliente: 7987997,
+//     nombreCliente: 'cliente 3',
+//     totalVentas: 98899
+//   }
+// ]
 
 const Reportes = () => {
   const [reporte, setReporte] = useState('clientes')
@@ -98,12 +99,12 @@ const Reportes = () => {
   const [selected, setSelected] = useState([])
   // const [message, setMessage] = useState({ open: false, severity: '', message: '' })
   const theme = useContext(ThemeContext)
-  console.log(reporte)
 
   useEffect(() => {
     if (reporte === 'clientes') serviceClientes.getAll().then(data => setData(data))
-    if (reporte === 'ventas') setData(ventasData)
-    // setLoading(false)
+    if (reporte === 'ventas') {
+      reporteUtils.ventasPorCliente().then(data => setData(data))
+    }
   }, [reporte])
 
   useEffect(() => {
@@ -150,7 +151,7 @@ const Reportes = () => {
             setSelected={setSelected}
             showControls={false}
             />
-          {reporte === 'ventas' && <Paper variant='outlined' elevation={12} style={{ padding: 10, alignSelf: 'flex-end' }} >Total Ventas: 22222</Paper>}
+          {reporte === 'ventas' && <Paper variant='outlined' elevation={12} style={{ padding: 10, alignSelf: 'flex-end' }} >Total Ventas: {data.reduce((acc, el) => acc + el.totalVentas, 0).toFixed(2)} $</Paper>}
           </>
           )
         : <div style={{ color: 'white' }}>Seleccione un reporte</div>

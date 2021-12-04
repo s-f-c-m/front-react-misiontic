@@ -47,8 +47,6 @@ export default function DataTable (props) {
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const { data, headCells, search, setSearch, title, selected, setSelected, form, deleteFunction, showControls } = props
 
-  console.log(showControls)
-
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')

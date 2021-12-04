@@ -122,7 +122,6 @@ export default function FormVentas (props) {
   // ]
 
   const refForm = useRef()
-  console.log(refForm)
 
   // Eliminar producto del carrito:
   const eliminarProducto = (index) => {

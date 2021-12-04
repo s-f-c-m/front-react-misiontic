@@ -25,7 +25,6 @@ const EnhancedTableToolbar = (props) => {
   const handleFormOpen = () => setFormOpen(true)
   const handleFormClose = () => setFormOpen(false)
 
-  console.log(props.showControls)
   let showControls
 
   if (props.showControls === undefined) {

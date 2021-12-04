@@ -19,8 +19,7 @@ const getProducto = async (codigo) => {
   const headers = {
     'Content-Type': 'application/json'
   }
-  const { data } = await axios.post(
-    baseUrl + '/' + codigo,
+  const { data } = await axios.get(
     { headers }
   )
 
