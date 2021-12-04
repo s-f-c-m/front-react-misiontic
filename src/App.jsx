@@ -15,6 +15,7 @@ import FormVentas from './components/Routes/FormVentas'
 import Clientes from './pages/Clientes'
 import Usuarios from './pages/Usuarios'
 import Reportes from './pages/Reportes'
+import reporteUtils from './utils/reportes'
 
 function App () {
   const slideCard = useRef()
@@ -23,6 +24,14 @@ function App () {
   useEffect(() => {
     tl.fromTo('.slidingCard', { x: 0 }, { x: -240, duration: 1.5 })
   }, [])
+
+  // prueba reportes:
+  const pruebaReportes = async () => {
+    const data = await reporteUtils.ventasPorCliente()
+    console.log('Reporte ventas por CLiente: ' + JSON.stringify(data))
+  }
+
+  pruebaReportes()
 
   return (
     <Content>

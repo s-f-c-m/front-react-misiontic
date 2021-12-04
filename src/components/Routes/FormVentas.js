@@ -11,6 +11,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import PersonSearchIcon from '@mui/icons-material/PersonSearch'
 import ListadoProductos from './ListadoProductos'
 import TableContainer from '@mui/material/TableContainer'
+import FormControl from '@mui/material/FormControl'
 // import InputLabel from '@mui/material/InputLabel'
 import TextField from '@mui/material/TextField'
 // import Fab from '@mui/material/Fab'
@@ -26,16 +27,17 @@ export default function FormVentas (props) {
     const headers = {
       'Content-Type': 'application/json'
     }
-
-    try {
-      const { data } = await axios.get(
-        'http://localhost:8083/api/v1/clientes/' + cedula,
-        { headers }
-      )
-      setName(data.nombreCliente)
-    } catch {
-      alert('cliente no encontrado')
-    }
+    if (validarCedula()) {
+      try {
+        const { data } = await axios.get(
+          'http://localhost:8083/api/v1/clientes/' + cedula,
+          { headers }
+        )
+        setName(data.nombreCliente)
+      } catch {
+        alert('cliente no encontrado')
+      }
+    } else alert('rellene el campo de cedula del cliente')
   }
 
   /// / Scripts para ventas
@@ -67,10 +69,10 @@ export default function FormVentas (props) {
   //   }
   // }
 
-  const buscar = (e) => {
+  const buscar = async (e) => {
     e.preventDefault()
     try {
-      const data = ventasServices.buscarProducto(codigoProducto)
+      const data = await ventasServices.buscarProducto(codigoProducto)
       setNombreProducto(data.nombreProducto)
       ivaProducto.current = data.ivaCompra
       valorProducto.current = data.precioVenta
@@ -86,6 +88,7 @@ export default function FormVentas (props) {
   const addProducto = () => {
     setCarrito([...carrito,
       {
+        index: carrito.length += 1,
         key: codigoProducto,
         data: {
           nombre: nombreProducto,
@@ -95,6 +98,7 @@ export default function FormVentas (props) {
           valorVentaProducto: valorTotalProducto + totalIvaProducto
         }
       }])
+
     valorProducto.current = 0
     ivaProducto.current = 0
     setvalorTotalVenta(currentTotal)
@@ -117,15 +121,12 @@ export default function FormVentas (props) {
   //   }
   // ]
 
-  console.log({ codigoProducto })
-
   const refForm = useRef()
   console.log(refForm)
 
   // Eliminar producto del carrito:
-  const eliminarProducto = (id) => {
-    console.log(JSON.stringify(carrito))
-    const newCarrito = carrito.filter((product) => product.key !== id)
+  const eliminarProducto = (index) => {
+    const newCarrito = carrito.filter((product) => product.index !== index)
     setCarrito(newCarrito)
   }
 
@@ -158,6 +159,17 @@ export default function FormVentas (props) {
     setIvaVenta(0)
   }
 
+  // validaciones:
+  const refCedula = useRef()
+
+  function validarCedula () {
+    if (refCedula.current?.value === '') {
+      return false
+    } else {
+      return true
+    }
+  }
+
   return <>
         <Box
             sx={{
@@ -175,13 +187,17 @@ export default function FormVentas (props) {
                     <Box sx={{ flexGrow: 1, margin: '20px 20px 40px 20px', justifyContent: 'center' }}>
                         <Grid container spacing={1}>
                             <Grid item xs={6} md={3}>
-                                <Input name="cedula" placeholder="Cédula del cliente"
-                                    onChange={(e) => setCedula(e.target.value)} margin="normal" size="small" />
+                              <FormControl >
+                                <Input name="cedula" placeholder="Cédula del cliente" ref={refCedula}
+                                  onChange={(e) => setCedula(e.target.value)} margin="normal" size="small" required = 'true' />
+                              </FormControl>
                             </Grid>
                             <Grid item xs={6} md={1}>
-                                <IconButton type = "button" size="small" component="spam" onClick = {handleSubmitFormCliente}>
-                                    <PersonSearchIcon />
-                                </IconButton>
+                              <FormControl >
+                                  <IconButton type = "submit" size="small" component="spam" onClick = {handleSubmitFormCliente}>
+                                      <PersonSearchIcon />
+                                  </IconButton>
+                              </FormControl>
                             </Grid>
                             <Grid item xs={6} md={3}>
                                 <Input name="nombre" placeholder="Nombre del cliente" value={name} margin="normal" size="small" />
@@ -240,7 +256,7 @@ export default function FormVentas (props) {
                 </form>
 
                 <TableContainer sx={{ height: 200 }}>
-                <ListadoProductos listado={carrito} funcionEliminar = {(id) => eliminarProducto(id)}/>
+                <ListadoProductos listado={carrito} funcionEliminar = {(index) => eliminarProducto(index)}/>
               </TableContainer>
 
                 <Box sx={{ flexGrow: 1, margin: '20px 40px 0 0' }}>

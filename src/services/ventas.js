@@ -45,4 +45,15 @@ const buscarProducto = async (codigoProducto) => {
   return data
 }
 
-export default { registrarDetalleVentas, registrarVenta, buscarProducto }
+const getAllVentas = async () => {
+  const headers = {
+    'Content-Type': 'application/json'
+  }
+  const { data } = await axios.get(
+    'http://localhost:8087/api/v1/ventas/',
+    { headers }
+  )
+  return data
+}
+
+export default { registrarDetalleVentas, registrarVenta, buscarProducto, getAllVentas }
