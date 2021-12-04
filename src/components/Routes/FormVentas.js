@@ -88,6 +88,7 @@ export default function FormVentas (props) {
   const addProducto = () => {
     setCarrito([...carrito,
       {
+        index: carrito.length += 1,
         key: codigoProducto,
         data: {
           nombre: nombreProducto,
@@ -97,6 +98,7 @@ export default function FormVentas (props) {
           valorVentaProducto: valorTotalProducto + totalIvaProducto
         }
       }])
+
     valorProducto.current = 0
     ivaProducto.current = 0
     setvalorTotalVenta(currentTotal)
@@ -123,8 +125,8 @@ export default function FormVentas (props) {
   console.log(refForm)
 
   // Eliminar producto del carrito:
-  const eliminarProducto = (id) => {
-    const newCarrito = carrito.filter((product) => product.key !== id)
+  const eliminarProducto = (index) => {
+    const newCarrito = carrito.filter((product) => product.index !== index)
     setCarrito(newCarrito)
   }
 
@@ -254,7 +256,7 @@ export default function FormVentas (props) {
                 </form>
 
                 <TableContainer sx={{ height: 200 }}>
-                <ListadoProductos listado={carrito} funcionEliminar = {(id) => eliminarProducto(id)}/>
+                <ListadoProductos listado={carrito} funcionEliminar = {(index) => eliminarProducto(index)}/>
               </TableContainer>
 
                 <Box sx={{ flexGrow: 1, margin: '20px 40px 0 0' }}>
