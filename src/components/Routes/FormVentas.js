@@ -17,11 +17,13 @@ import TextField from '@mui/material/TextField'
 // import Fab from '@mui/material/Fab'
 import ventasServices from '../../services/ventas'
 import FormHelperText from '@mui/material/FormHelperText'
+import AlertPopup from '../AlertPopup'
 
 export default function FormVentas (props) {
   /// / scripts para buscar el cliente:
   const [cedula, setCedula] = useState()
   const [name, setName] = useState('')
+  const [message, setMessage] = useState({ open: false, severity: '', message: '' })
 
   const handleSubmitFormCliente = async (e) => {
     e.preventDefault()
@@ -40,7 +42,7 @@ export default function FormVentas (props) {
         setName(data.nombreCliente)
         setMensajeCliente('')
       } catch {
-        alert('cliente no encontrado')
+        setMessage({ open: true, severity: 'error', message: 'Cliente no encontrado' })
       }
     }
   }
@@ -87,7 +89,7 @@ export default function FormVentas (props) {
         valorProducto.current = data.precioVenta
         setMensajeProducto('')
       } catch {
-        alert('producto no encontrado')
+        setMessage({ open: true, severity: 'error', message: 'Producto no encontrado' })
       }
     }
   }
@@ -159,7 +161,7 @@ export default function FormVentas (props) {
     ) {
       setMensajeCliente('Nombre requerido')
     } else if (carrito.length === 0) {
-      alert('Debe ingresar al menos un producto')
+      setMessage({ open: true, severity: 'error', message: 'Debe ingresar al menos un producto' })
     } else {
       setMensajeCliente('')
       const listaDetalleVenta = []
@@ -182,13 +184,17 @@ export default function FormVentas (props) {
         total_venta: valorTotalVenta,
         ivaventa: ivaVenta,
         valor_venta: valorTotalVenta + ivaVenta
+      }).then(() => {
+        setMessage({ open: true, severity: 'success', message: 'Venta registrada con éxito' })
+      }).catch(() => {
+        setMessage({ open: true, severity: 'error', message: 'Error al registrar la venta' })
+      }).finally(() => {
+        setvalorTotalVenta(0)
+        setIvaVenta(0)
+        setCarrito([])
+        setCedula('')
+        setName('')
       })
-
-      setvalorTotalVenta(0)
-      setIvaVenta(0)
-      setCarrito([])
-      setCedula('')
-      setName('')
     }
   }
 
@@ -206,6 +212,7 @@ export default function FormVentas (props) {
   const [mensajeProducto, setMensajeProducto] = useState('')
 
   return <>
+      <AlertPopup message={message} setMessage={setMessage}/>
         <Box
             sx={{
               display: 'flex',

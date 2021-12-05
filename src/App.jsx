@@ -63,14 +63,18 @@ function App () {
             </ProtectedRoute>
           } />
           <Route path='/ventas' element={
+            <ProtectedRoute>
             <ResponsiveDrawer>
                 <FormVentas />
             </ResponsiveDrawer>
+            </ProtectedRoute>
           } />
           <Route path='/reportes' element={
+            <ProtectedRoute>
             <ResponsiveDrawer>
                 <Reportes />
             </ResponsiveDrawer>
+            </ProtectedRoute>
           } />
         </Routes>
       </SessionProvider>
