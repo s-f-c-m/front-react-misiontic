@@ -35,9 +35,12 @@ const ButtonLogout = ({ style }) => {
   const nav = useNavigate()
 
   return (
+    <div onClick={handleLogout} style={{ display: 'flex' }}>
     <ButtonThemeWrapper style={style} theme={theme.state} onClick={handleLogout}>
-      <i className='fa fa-sign-out' aria-hidden="true"></i>
+    <i className='fa fa-sign-out' aria-hidden="true"></i>
     </ButtonThemeWrapper>
+    <span>Logout</span>
+    </div>
   )
 }
 

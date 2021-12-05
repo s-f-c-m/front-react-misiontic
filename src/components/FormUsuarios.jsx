@@ -2,10 +2,20 @@ import { useState, useEffect } from 'react'
 import InputForm from './InputForm'
 import FormContainer from './FormsContainer'
 import Button from './Button'
-import { Formik, Form } from 'formik'
+import { Formik, Form, Field } from 'formik'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
+import CustomSelect from './CustomSelect'
 import serviceUsuarios from '../services/usuarios'
+
+const roles = [
+  { label: 'Admin', value: 'admin' },
+  { label: 'Clientes', value: 'cliente' },
+  { label: 'Productos', value: 'productos' },
+  { label: 'Ventas', value: 'ventas' },
+  { label: 'Reportes', value: 'reportes' },
+  { label: 'Usuarios', value: 'usuarios' }
+]
 
 export default function FormUsuarios (props) {
   const [isCliente, setIsCliente] = useState(false)
@@ -18,7 +28,7 @@ export default function FormUsuarios (props) {
     passwordconfirm: '',
     name: '',
     email: '',
-    roles: ['user']
+    roles: ['']
   }
 
   const [formulario, setFormulario] = useState(formularioInicial)
@@ -37,6 +47,7 @@ export default function FormUsuarios (props) {
     const promises = []
     switch (op) {
       case 'register':
+        console.log(values)
         serviceUsuarios.postUsuario(values).then(() => {
           setMessage({ severity: 'success', title: 'Usuario Agregado', message: 'Se agregó el usuario satisfactoriamente' })
         }).catch(() => {
@@ -70,7 +81,8 @@ export default function FormUsuarios (props) {
           ...formulario,
           user: data.user,
           name: data.name,
-          email: data.email
+          email: data.email,
+          roles: data.roles
         })
       }).catch(() => {
         alert('Error al consultar usuario')
@@ -90,7 +102,6 @@ export default function FormUsuarios (props) {
   }
 
   return <>
-
     <div style={{ display: 'flex', 'flex-direction': 'column' }}>
     {passerror &&
     <Alert severity='error'>
@@ -144,6 +155,18 @@ export default function FormUsuarios (props) {
               placeholder='Confirmar contraseña'
               required={isCliente ? '' : 'required'}
             />
+            <div style={{ color: 'white', display: 'grid', gridTemplateColumns: '.5fr 1fr' }}>
+              <label>Rol</label>
+              <div>
+            <Field
+              name="roles"
+              options={roles}
+              component={CustomSelect}
+              placeholder="Roles"
+              isMulti={true}
+            />
+              </div>
+            </div>
             <div style={{ display: 'flex', gap: '5px', 'justify-content': 'space-between' }} >
               {!isCliente &&
                 <>

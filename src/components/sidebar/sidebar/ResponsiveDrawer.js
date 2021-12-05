@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import PropTypes from 'prop-types'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
@@ -14,13 +14,14 @@ import ButtonTheme from '../../ButtonTheme'
 import { ThemeContext } from '../../../theme/ThemeContext'
 import NavLink from '../menus/NavLink'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
-import ButtonLogout from '../../ButtonLogout'
+// import ButtonLogout from '../../ButtonLogout'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import TableChartIcon from '@mui/icons-material/TableChart'
 import GroupIcon from '@mui/icons-material/Group'
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
 import Avatar from '@mui/material/Avatar'
 import { SessionContext } from '../../../auth/session'
+import ProfileMenu from './ProfileMenu'
 
 const drawerWidth = 240
 function ResponsiveDrawer ({ children, window, ...props }) {
@@ -29,14 +30,23 @@ function ResponsiveDrawer ({ children, window, ...props }) {
     setMobileOpen(!mobileOpen)
   }
   const [session] = useContext(SessionContext)
-  console.log(session)
 
+  const [anchorEl, setAnchorEl] = useState(null)
+  const open = Boolean(anchorEl)
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  console.log(session)
   const drawer = (
     <div>
       <Toolbar />
       <NavLink link='/productos' icon={<UploadFileIcon />} >Productos</NavLink>
       <NavLink link='/clientes' icon={<GroupIcon />}>Clientes</NavLink>
-      <NavLink link='/usuarios' icon={<SupervisedUserCircleIcon />}>Usuarios</NavLink>
+      {session.roles.includes('admin') && <NavLink link='/usuarios' icon={<SupervisedUserCircleIcon />}>Usuarios</NavLink> }
       <NavLink link='/ventas' icon={<AttachMoneyIcon />}>Ventas</NavLink>
       <NavLink link='/reportes' icon={<TableChartIcon />}>Reportes</NavLink>
       {/* <AccordionSummary /> */}
@@ -45,6 +55,7 @@ function ResponsiveDrawer ({ children, window, ...props }) {
   const container = window !== undefined ? () => window().document.body : undefined
   const theme = useContext(ThemeContext)
   return (
+  <>
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar
@@ -68,9 +79,8 @@ function ResponsiveDrawer ({ children, window, ...props }) {
             Tienda Genérica
           </Typography>
           <div style={{ display: 'flex' }}>
-            <ButtonTheme style={{ alignSelf: 'center' }} />
-            <ButtonLogout style={{ alignSelf: 'center' }} />
-            <Avatar sx={{ bgcolor: theme.state.mainColor2 }} alt={session.sub} src='../notwork.jpg'/>
+            <ButtonTheme style={{ alignSelf: 'center' }} />
+            <Avatar sx={{ bgcolor: theme.state.mainColor2 }} alt={session.sub} src='../notwork.jpg' onClick={handleClick}/>
           </div>
         </Toolbar>
       </AppBar>
@@ -108,6 +118,12 @@ function ResponsiveDrawer ({ children, window, ...props }) {
       </Box>
       {children}
     </Box>
+    <ProfileMenu
+       anchorEl={anchorEl}
+        open={open}
+        handleClose={handleClose}
+        />
+    </>
   )
 }
 ResponsiveDrawer.propTypes = {

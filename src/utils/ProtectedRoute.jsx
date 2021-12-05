@@ -26,7 +26,9 @@ const ProtectedRoute = ({ children }) => {
             exp: data.exp,
             iat: data.iat,
             roles: data.roles,
-            sub: data.sub
+            sub: data.sub,
+            name: data.name,
+            email: data.email
           })
           setLoading(false)
         }

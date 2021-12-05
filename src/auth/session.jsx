@@ -23,7 +23,9 @@ const SessionProvider = props => {
     exp: '',
     iat: '',
     roles: [],
-    sub: ''
+    sub: '',
+    name: '',
+    email: ''
   })
 
   return (
