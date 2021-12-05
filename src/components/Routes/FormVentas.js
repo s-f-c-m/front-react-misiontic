@@ -16,6 +16,7 @@ import FormControl from '@mui/material/FormControl'
 import TextField from '@mui/material/TextField'
 // import Fab from '@mui/material/Fab'
 import ventasServices from '../../services/ventas'
+import FormHelperText from '@mui/material/FormHelperText'
 
 export default function FormVentas (props) {
   /// / scripts para buscar el cliente:
@@ -27,17 +28,21 @@ export default function FormVentas (props) {
     const headers = {
       'Content-Type': 'application/json'
     }
-    if (validarCedula()) {
+    if (refFormCliente.current[0].value.trim() === '') {
+      setMensajeCedula('Campo requerido')
+    } else {
+      setMensajeCedula('')
       try {
         const { data } = await axios.get(
           'http://localhost:8083/api/v1/clientes/' + cedula,
           { headers }
         )
         setName(data.nombreCliente)
+        setMensajeCliente('')
       } catch {
         alert('cliente no encontrado')
       }
-    } else alert('rellene el campo de cedula del cliente')
+    }
   }
 
   /// / Scripts para ventas
@@ -71,13 +76,19 @@ export default function FormVentas (props) {
 
   const buscar = async (e) => {
     e.preventDefault()
-    try {
-      const data = await ventasServices.buscarProducto(codigoProducto)
-      setNombreProducto(data.nombreProducto)
-      ivaProducto.current = data.ivaCompra
-      valorProducto.current = data.precioVenta
-    } catch {
-      alert('producto no encontrado')
+    if (refFormProducto.current[0].value.trim() === '') {
+      setMensajeCodigo('Campo requerido')
+    } else {
+      setMensajeCodigo('')
+      try {
+        const data = await ventasServices.buscarProducto(codigoProducto)
+        setNombreProducto(data.nombreProducto)
+        ivaProducto.current = data.ivaCompra
+        valorProducto.current = data.precioVenta
+        setMensajeProducto('')
+      } catch {
+        alert('producto no encontrado')
+      }
     }
   }
 
@@ -86,28 +97,36 @@ export default function FormVentas (props) {
   const [carrito, setCarrito] = useState([])
 
   const addProducto = () => {
-    setCarrito([...carrito,
-      {
-        index: carrito.length += 1,
-        key: codigoProducto,
-        data: {
-          nombre: nombreProducto,
-          cantidad: cantidadProducto,
-          totalProducto: valorTotalProducto,
-          valorTotalIVAdelProducto: totalIvaProducto,
-          valorVentaProducto: valorTotalProducto + totalIvaProducto
-        }
-      }])
+    if (refFormProducto.current[1].value.trim() === '') {
+      setMensajeProducto('Campo requerido')
+    } else if (refFormProducto.current[2].value <= 0) {
+      setMensajeCantidad('No válido')
+    } else {
+      setMensajeProducto('')
+      setMensajeCantidad('')
+      setCarrito([...carrito,
+        {
+          index: carrito.length += 1,
+          key: codigoProducto,
+          data: {
+            nombre: nombreProducto,
+            cantidad: cantidadProducto,
+            totalProducto: valorTotalProducto,
+            valorTotalIVAdelProducto: totalIvaProducto,
+            valorVentaProducto: valorTotalProducto + totalIvaProducto
+          }
+        }])
 
-    valorProducto.current = 0
-    ivaProducto.current = 0
-    setvalorTotalVenta(currentTotal)
-    setIvaVenta(currentTotalIvaVenta)
-    setTotalIvaProducto(0)
-    setCodigoProducto('')
-    setNombreProducto('')
-    setCantidadProducto(0)
-    setValorTotalProducto(0)
+      valorProducto.current = 0
+      ivaProducto.current = 0
+      setvalorTotalVenta(currentTotal)
+      setIvaVenta(currentTotalIvaVenta)
+      setTotalIvaProducto(0)
+      setCodigoProducto('')
+      setNombreProducto('')
+      setCantidadProducto(0)
+      setValorTotalProducto(0)
+    }
   }
 
   // const listaPrueba = [
@@ -121,53 +140,70 @@ export default function FormVentas (props) {
   //   }
   // ]
 
-  const refForm = useRef()
-
   // Eliminar producto del carrito:
-  const eliminarProducto = (index) => {
-    const newCarrito = carrito.filter((product) => product.index !== index)
+  const eliminarProducto = async (index) => {
+    const newCarrito = await carrito.filter((product) => product.index !== index)
     setCarrito(newCarrito)
+    const productoEliminado = await (carrito.filter((product) => product.index === index))[0]
+    await setCurrentTotal(currentTotal - productoEliminado.data.totalProducto)
+    await setCurrentTotalIvaVenta(currentTotalIvaVenta - productoEliminado.data.valorTotalIVAdelProducto)
+    setvalorTotalVenta(valorTotalVenta - productoEliminado.data.totalProducto)
+    setIvaVenta(ivaVenta - productoEliminado.data.valorTotalIVAdelProducto)
   }
 
   // Registrar Venta y detalleVenta:
 
   const registrar = () => {
-    const listaDetalleVenta = []
-    carrito.map(prod => {
-      listaDetalleVenta.push({
-        codigo_producto: prod.key,
-        cantidad_producto: prod.data.cantidad,
-        valor_total: prod.data.totalProducto,
-        valoriva: prod.data.valorTotalIVAdelProducto,
-        valor_venta: prod.data.valorVentaProducto
-      })
-      return 0
-    })
-
-    ventasServices.registrarDetalleVentas(listaDetalleVenta)
-
-    ventasServices.registrarVenta({
-      cedula_cliente: cedula,
-      detalle_venta: listaDetalleVenta,
-      total_venta: valorTotalVenta,
-      ivaventa: ivaVenta,
-      valor_venta: valorTotalVenta + ivaVenta
-    })
-
-    setvalorTotalVenta(0)
-    setIvaVenta(0)
-  }
-
-  // validaciones:
-  const refCedula = useRef()
-
-  function validarCedula () {
-    if (refCedula.current?.value === '') {
-      return false
+    if (
+      refFormCliente.current[1].value.trim() === ''
+    ) {
+      setMensajeCliente('Nombre requerido')
+    } else if (carrito.length === 0) {
+      alert('Debe ingresar al menos un producto')
     } else {
-      return true
+      setMensajeCliente('')
+      const listaDetalleVenta = []
+      carrito.map(prod => {
+        listaDetalleVenta.push({
+          codigo_producto: prod.key,
+          cantidad_producto: prod.data.cantidad,
+          valor_total: prod.data.totalProducto,
+          valoriva: prod.data.valorTotalIVAdelProducto,
+          valor_venta: prod.data.valorVentaProducto
+        })
+        return 0
+      })
+
+      ventasServices.registrarDetalleVentas(listaDetalleVenta)
+
+      ventasServices.registrarVenta({
+        cedula_cliente: cedula,
+        detalle_venta: listaDetalleVenta,
+        total_venta: valorTotalVenta,
+        ivaventa: ivaVenta,
+        valor_venta: valorTotalVenta + ivaVenta
+      })
+
+      setvalorTotalVenta(0)
+      setIvaVenta(0)
+      setCarrito([])
+      setCedula('')
+      setName('')
     }
   }
+
+  // ================================================== V A L I D A C I O N E S : ==========================================================
+
+  const refFormCliente = useRef()
+  const refFormProducto = useRef()
+
+  // Mensajes para los helperTexts: ========================
+
+  const [mensajeCedula, setMensajeCedula] = useState('')
+  const [mensajeCodigo, setMensajeCodigo] = useState('')
+  const [mensajeCantidad, setMensajeCantidad] = useState('')
+  const [mensajeCliente, setMensajeCliente] = useState('')
+  const [mensajeProducto, setMensajeProducto] = useState('')
 
   return <>
         <Box
@@ -177,18 +213,19 @@ export default function FormVentas (props) {
               '& > :not(style)': {
                 m: 1,
                 maxWidth: 1000,
-                height: 450
+                height: 470
               }
             }}
         >
             <Paper elevation={12} sx={{ background: 'E0F7FA', padding: '20px' }}>
-                <form ref={refForm}>
+                <form ref={refFormCliente}>
                     <Box sx={{ flexGrow: 1, margin: '20px 20px 40px 20px', justifyContent: 'center' }}>
                         <Grid container spacing={1}>
                             <Grid item xs={6} md={3}>
                               <FormControl >
-                                <Input name="cedula" placeholder="Cédula del cliente" ref={refCedula}
-                                  onChange={(e) => setCedula(e.target.value)} margin="normal" size="small" required = 'true' />
+                                <Input name="cedula" placeholder="Cédula del cliente"
+                                  onChange={(e) => setCedula(e.target.value)} margin="normal" size="small" inputProps = {{ min: '1', pattern: '[0-9]*' }}/>
+                                <FormHelperText error id="my-helper-text">{mensajeCedula}</FormHelperText>
                               </FormControl>
                             </Grid>
                             <Grid item xs={6} md={1}>
@@ -200,6 +237,7 @@ export default function FormVentas (props) {
                             </Grid>
                             <Grid item xs={6} md={3}>
                                 <Input name="nombre" placeholder="Nombre del cliente" value={name} margin="normal" size="small" />
+                                <FormHelperText error id="my-helper-text">{mensajeCliente}</FormHelperText>
                             </Grid>
                         </Grid>
                         <Grid item xs={6} md={3} style={{ marginLeft: 'auto' }}>
@@ -207,7 +245,7 @@ export default function FormVentas (props) {
                     </Box>
                 </form>
 
-                <form>
+                <form ref = {refFormProducto}>
                     <Box sx={{ flexGrow: 1, margin: '20px' }}>
                         <Grid container spacing={1}>
                             <Grid item xs={6} md={0.5}>
@@ -215,7 +253,8 @@ export default function FormVentas (props) {
                             </Grid>
                             <Grid item xs={6} md={2}>
                                 <Input name="codigoProducto" placeholder="Código del Producto" value = {codigoProducto}
-                                    onChange={(e) => setCodigoProducto(e.target.value)} margin="normal" size="small" required/>
+                                    onChange={(e) => setCodigoProducto(e.target.value)} margin="normal" size="small" />
+                                <FormHelperText error id="my-helper-text">{mensajeCodigo}</FormHelperText>
                             </Grid>
                             <Grid item xs={6} md={1}>
                                 <IconButton type="button" size="small" component="spam" onClick={buscar}>
@@ -224,6 +263,7 @@ export default function FormVentas (props) {
                             </Grid>
                             <Grid item xs={6} md={3.25}>
                                 <Input name="nombreProducto" placeholder="Producto" value={nombreProducto} margin="normal" size="small" />
+                                <FormHelperText error id="my-helper-text">{mensajeProducto}</FormHelperText>
                             </Grid>
                             <Grid item xs={6} md={1.5}>
                                 <Input name="cantidad" type="number" placeholder="cantidad" margin="normal" size="small" pattern='[0-9]*' value = {cantidadProducto} onChange={(e) => {
@@ -237,7 +277,8 @@ export default function FormVentas (props) {
                                   const totalIvaVenta = ivaVenta + totalIVA
                                   setCurrentTotal(valorVentaSinIVA)
                                   setCurrentTotalIvaVenta(totalIvaVenta)
-                                }} required/>
+                                }} inputProps = {{ min: '1' }}/>
+                                <FormHelperText error id="my-helper-text">{mensajeCantidad}</FormHelperText>
                             </Grid>
                             <Grid item xs={6} md={2.25}>
                                 <Input name="Total" placeholder="Total" value={valorTotalProducto} startAdornment={<InputAdornment position="start">$</InputAdornment>} margin="normal" size="small" />
@@ -261,7 +302,7 @@ export default function FormVentas (props) {
                 <Box sx={{ flexGrow: 1, margin: '20px 40px 0 0' }}>
                   <Grid container spacing={1}>
                     <Grid item style={{ marginLeft: 'auto' }} >
-                      <Button onClick = { registrar }>
+                      <Button onClick = { registrar } component = 'spam'>
                         Aceptar
                       </Button>
                     </Grid>
