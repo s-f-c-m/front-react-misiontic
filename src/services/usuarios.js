@@ -74,6 +74,20 @@ const putUsuarioPassword = async (values) => {
   return data
 }
 
+const putUsuarioNombreRoles = async (values) => {
+  const { user, ...newValues } = values
+  const headers = {
+    'Content-Type': 'application/json'
+  }
+  const { data } = await axios.put(
+    baseUrl + '/nameroles/' + user,
+    newValues,
+    { headers }
+  )
+
+  return data
+}
+
 const putUsuarioNombre = async (values) => {
   const { user, ...newValues } = values
 
@@ -114,4 +128,4 @@ const getUsuario = async (user) => {
   return data.user
 }
 
-export default { getAll, postUsuario, deleteUsuario, putUsuario, getUsuario, putUsuarioPassword, putUsuarioNombre, putUsuarioRoles }
+export default { getAll, postUsuario, deleteUsuario, putUsuario, getUsuario, putUsuarioPassword, putUsuarioNombre, putUsuarioRoles, putUsuarioNombreRoles }

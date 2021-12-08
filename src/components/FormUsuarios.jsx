@@ -60,7 +60,7 @@ export default function FormUsuarios (props) {
         if (values.password !== '') {
           promises.push(serviceUsuarios.putUsuarioPassword({ user: values.user, password: values.password }))
         }
-        promises.push(serviceUsuarios.putUsuarioNombre({ user: values.user, name: values.name }))
+        promises.push(serviceUsuarios.putUsuarioNombreRoles({ user: values.user, name: values.name, roles: values.roles }))
         Promise.all(promises).then(() => {
           setMessage({ severity: 'success', title: 'Usuario Modificado', message: 'Se modificó el usuario satisfactoriamente' })
         }).catch(() => {
