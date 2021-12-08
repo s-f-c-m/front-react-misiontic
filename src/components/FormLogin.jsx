@@ -24,7 +24,7 @@ const Form = ({ setErrorMsg }) => {
     try {
       const token = await login(formulario)
       setSessionCookie(token.token)
-      nav('/productos')
+      nav('/ciudades')
       setLoading(false)
     } catch {
       setLoading(false)

@@ -3,24 +3,28 @@ import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import ButtonBase from '@mui/material/ButtonBase'
 import Typography from '@mui/material/Typography'
-// import { height } from '@mui/system'
+import { CityContext } from '../CiudadContext/CiudadContext'
+import { useContext } from 'react'
+import { useNavigate } from 'react-router'
 
 const images = [
   {
     url: '/static/images/bogota.jpg',
     title: 'Bogotá',
     width: '33%',
-    OnClick: {}
+    context: 'bogota'
   },
   {
     url: '/static/images/cali.jpg',
     title: 'Cali',
-    width: '34%'
+    width: '34%',
+    context: 'cali'
   },
   {
     url: '/static/images/medellin.jpg',
     title: 'Medellín',
-    width: '33%'
+    width: '33%',
+    context: 'medellin'
   }
 ]
 
@@ -89,16 +93,24 @@ const ImageMarked = styled('span')(({ theme }) => ({
 }))
 
 export default function Ciudades () {
+  const city = useContext(CityContext)
+  const nav = useNavigate()
+
+  const handleCity = (c) => {
+    city.dispatch({ type: c })
+    nav('/productos')
+  }
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%', height: '100%' }}>
       {images.map((image) => (
         <ImageButton
           focusRipple
-          href = '/'
+          // href = '/productos'
           key={image.title}
           style={{
             width: image.width
           }}
+          onClick={() => handleCity(image.context)}
         >
           <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
           <ImageBackdrop className="MuiImageBackdrop-root" />

@@ -21,6 +21,7 @@ import GroupIcon from '@mui/icons-material/Group'
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
 import Avatar from '@mui/material/Avatar'
 import { SessionContext } from '../../../auth/session'
+import { CityContext } from '../../../CiudadContext/CiudadContext'
 import ProfileMenu from './ProfileMenu'
 
 const drawerWidth = 240
@@ -30,6 +31,7 @@ function ResponsiveDrawer ({ children, window, ...props }) {
     setMobileOpen(!mobileOpen)
   }
   const [session] = useContext(SessionContext)
+  const city = useContext(CityContext)
 
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
@@ -40,7 +42,6 @@ function ResponsiveDrawer ({ children, window, ...props }) {
     setAnchorEl(null)
   }
 
-  console.log(session)
   const drawer = (
     <div>
       <Toolbar />
@@ -76,7 +77,7 @@ function ResponsiveDrawer ({ children, window, ...props }) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Tienda Genérica
+              Tienda Genérica - Sede {city.state.nombre}
           </Typography>
           <div style={{ display: 'flex' }}>
             <ButtonTheme style={{ alignSelf: 'center' }} />
