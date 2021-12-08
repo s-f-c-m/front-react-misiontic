@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
-import { useState, useRef } from 'react'
+import { useState, useRef, useContext } from 'react'
 import Grid from '@mui/material/Grid'
-import axios from 'axios'
+// import axios from 'axios'
 import InputAdornment from '@mui/material/InputAdornment'
 import { Button, Input } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
@@ -16,34 +16,44 @@ import FormControl from '@mui/material/FormControl'
 import TextField from '@mui/material/TextField'
 // import Fab from '@mui/material/Fab'
 import ventasServices from '../../services/ventas'
+import productosService from '../../services/productos'
+import clientesService from '../../services/clientes'
 import FormHelperText from '@mui/material/FormHelperText'
 import AlertPopup from '../AlertPopup'
+import { CityContext } from '../../CiudadContext/CiudadContext'
 
 export default function FormVentas (props) {
   /// / scripts para buscar el cliente:
   const [cedula, setCedula] = useState()
   const [name, setName] = useState('')
   const [message, setMessage] = useState({ open: false, severity: '', message: '' })
+  const city = useContext(CityContext)
 
   const handleSubmitFormCliente = async (e) => {
     e.preventDefault()
-    const headers = {
-      'Content-Type': 'application/json'
-    }
+    // const headers = {
+    //   'Content-Type': 'application/json'
+    // }
     if (refFormCliente.current[0].value.trim() === '') {
       setMensajeCedula('Campo requerido')
     } else {
       setMensajeCedula('')
-      try {
-        const { data } = await axios.get(
-          'http://localhost:8083/api/v1/clientes/' + cedula,
-          { headers }
-        )
+      clientesService.getCliente(city.state.portClientes, cedula).then((data) => {
         setName(data.nombreCliente)
         setMensajeCliente('')
-      } catch {
+      }).catch(() => {
         setMessage({ open: true, severity: 'error', message: 'Cliente no encontrado' })
-      }
+      })
+      // try {
+      //   const { data } = await axios.get(
+      //     'http://localhost:8083/api/v1/clientes/' + cedula,
+      //     { headers }
+      //   )
+      //   setName(data.nombreCliente)
+      //   setMensajeCliente('')
+      // } catch {
+      //   setMessage({ open: true, severity: 'error', message: 'Cliente no encontrado' })
+      // }
     }
   }
 
@@ -83,7 +93,8 @@ export default function FormVentas (props) {
     } else {
       setMensajeCodigo('')
       try {
-        const data = await ventasServices.buscarProducto(codigoProducto)
+        const data = await productosService.getProducto(city.state.portProductos, codigoProducto)
+        console.log(data)
         setNombreProducto(data.nombreProducto)
         ivaProducto.current = data.ivaCompra
         valorProducto.current = data.precioVenta
@@ -131,17 +142,6 @@ export default function FormVentas (props) {
     }
   }
 
-  // const listaPrueba = [
-  //   {
-  //     key: 777,
-  //     data: {
-  //       nombre: 'nombre',
-  //       cantidad: '7',
-  //       total: '7777'
-  //     }
-  //   }
-  // ]
-
   // Eliminar producto del carrito:
   const eliminarProducto = async (index) => {
     const newCarrito = await carrito.filter((product) => product.index !== index)
@@ -176,9 +176,9 @@ export default function FormVentas (props) {
         return 0
       })
 
-      ventasServices.registrarDetalleVentas(listaDetalleVenta)
+      // ventasServices.registrarDetalleVentas(listaDetalleVenta)
 
-      ventasServices.registrarVenta({
+      ventasServices.registrarVenta(city.state.portVentas, {
         cedula_cliente: cedula,
         detalle_venta: listaDetalleVenta,
         total_venta: valorTotalVenta,

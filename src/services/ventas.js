@@ -1,6 +1,8 @@
 import axios from 'axios'
+const baseUrl = 'http://localhost:'
+const apiRoute = '/api/v1/ventas/'
 
-const registrarDetalleVentas = async (data) => {
+const registrarDetalleVentas = async (port, data) => {
   const headers = {
     'Content-Type': 'application/json'
   }
@@ -33,38 +35,38 @@ const registrarDetalleVentas = async (data) => {
 //   }
 // }
 
-const registrarVenta = async (values) => {
+const registrarVenta = async (port, values) => {
   const headers = {
     'Content-Type': 'application/json'
   }
   const { data } = await axios.post(
-    'http://localhost:8087/api/v1/ventas/',
+    baseUrl + port + apiRoute,
     JSON.stringify(values),
     { headers }
   )
   return data
 }
 
-const buscarProducto = async (codigoProducto) => {
+// const buscarProducto = async (codigoProducto) => {
+//   const headers = {
+//     'Content-Type': 'application/json'
+//   }
+//   const { data } = await axios.get(
+//     'http://localhost:8085/api/v1/productos/' + codigoProducto,
+//     { headers }
+//   )
+//   return data
+// }
+
+const getAllVentas = async (port) => {
   const headers = {
     'Content-Type': 'application/json'
   }
   const { data } = await axios.get(
-    'http://localhost:8085/api/v1/productos/' + codigoProducto,
+    baseUrl + port + apiRoute,
     { headers }
   )
   return data
 }
 
-const getAllVentas = async () => {
-  const headers = {
-    'Content-Type': 'application/json'
-  }
-  const { data } = await axios.get(
-    'http://localhost:8087/api/v1/ventas/',
-    { headers }
-  )
-  return data
-}
-
-export default { registrarDetalleVentas, registrarVenta, buscarProducto, getAllVentas }
+export default { registrarDetalleVentas, registrarVenta, getAllVentas }

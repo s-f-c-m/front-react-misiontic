@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import InputForm from './InputForm'
 import FormContainer from './FormsContainer'
 import Button from './Button'
@@ -6,11 +6,13 @@ import { Formik, Form } from 'formik'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
 import serviceClientes from '../services/clientes'
+import { CityContext } from '../CiudadContext/CiudadContext'
 
 export default function FormClientes (props) {
   const [isCliente, setIsCliente] = useState(false)
   const { selected, flagToUpdate, setFlagToUpdate } = props
   const [message, setMessage] = useState({ severity: '', title: '', message: '' })
+  const city = useContext(CityContext)
 
   const formularioInicial = {
     cedulaCliente: '',
@@ -27,7 +29,7 @@ export default function FormClientes (props) {
     const op = httpAction
     switch (op) {
       case 'register':
-        serviceClientes.postCliente(values).then(() => {
+        serviceClientes.postCliente(city.state.portClientes, values).then(() => {
           setMessage({ severity: 'success', title: 'Cliente Agregado', message: 'Se agregó el cliente satisfactoriamente' })
         }).catch(() => {
           setMessage({ severity: 'error', title: 'Error Agregar', message: 'Ocurrió un error al agregar el cliente. Intente de nuevo o comuníquese con el administrador' })
@@ -37,7 +39,7 @@ export default function FormClientes (props) {
         })
         break
       case 'update':
-        serviceClientes.putCliente(values).then(() => {
+        serviceClientes.putCliente(city.state.portClientes, values).then(() => {
           setMessage({ severity: 'success', title: 'Cliente Modificado', message: 'Se modificó el cliente satisfactoriamente' })
         }).catch(() => {
           setMessage({ severity: 'error', title: 'Error Modificar', message: 'Ocurrió un error al modificar el cliente. Intente de nuevo o comuníquese con el administrador' })
@@ -52,7 +54,7 @@ export default function FormClientes (props) {
 
   useEffect(() => {
     if (selected.length === 1) {
-      serviceClientes.getCliente(selected[0]).then((data) => {
+      serviceClientes.getCliente(city.state.portClientes, selected[0]).then((data) => {
         setFormulario(data)
       }).catch(() => {
         alert('Error al consultar cliente')

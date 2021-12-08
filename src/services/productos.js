@@ -1,13 +1,14 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:8085/api/v1/productos'
+const baseUrl = 'http://localhost:'
+const apiRoute = '/api/v1/productos/'
 
-const postProductos = async (array) => {
+const postProductos = async (port, array) => {
   const body = JSON.stringify(array)
   const headers = {
     'Content-Type': 'application/json'
   }
   const { data } = await axios.post(
-    baseUrl,
+    baseUrl + port + apiRoute,
     body,
     { headers }
   )
@@ -15,11 +16,12 @@ const postProductos = async (array) => {
   return data
 }
 
-const getProducto = async (codigo) => {
+const getProducto = async (port, codigo) => {
   const headers = {
     'Content-Type': 'application/json'
   }
   const { data } = await axios.get(
+    baseUrl + port + apiRoute + codigo,
     { headers }
   )
 

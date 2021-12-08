@@ -1,13 +1,15 @@
-import { useRef } from 'react'
+import { useRef, useContext } from 'react'
 import Input from './Input'
 import Button from './Button'
 import useLoadCsv from '../hooks/useLoadCsv'
 import BasicTable from './DataTable/BasicTable'
 import productosService from '../services/productos'
+import { CityContext } from '../CiudadContext/CiudadContext'
 
 const ReadCsv = () => {
   const [csvArray, loadCsv, clearCsvArray] = useLoadCsv()
   const inputFile = useRef()
+  const city = useContext(CityContext)
 
   const clearTable = () => {
     clearCsvArray()
@@ -44,7 +46,7 @@ const ReadCsv = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log(csvArray)
-    productosService.postProductos(csvArray).then(() => {
+    productosService.postProductos(city.state.portProductos, csvArray).then(() => {
       alert('productos cargados exitosamente')
     }).catch(() => {
       alert('error al cargar uno o más productos')

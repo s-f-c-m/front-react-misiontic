@@ -1,9 +1,10 @@
-import { useState, useEffect, forwardRef } from 'react'
+import { useState, useEffect, forwardRef, useContext } from 'react'
 import Snackbar from '@mui/material/Snackbar'
 import DataTable from './DataTable'
 import serviceClientes from '../../services/clientes'
 import FormClientes from '../../components/FormClientes'
 import MuiAlert from '@mui/material/Alert'
+import { CityContext } from '../../CiudadContext/CiudadContext'
 
 const Alert = forwardRef(function Alert (props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
@@ -65,9 +66,10 @@ const DataTableClientes = () => {
   const [selected, setSelected] = useState([])
   const [flagToUpdate, setFlagToUpdate] = useState(false)
   const [message, setMessage] = useState({ open: false, severity: '', message: '' })
+  const city = useContext(CityContext)
 
   useEffect(() => {
-    serviceClientes.getAll().then(data => setData(data))
+    serviceClientes.getAll(city.state.portClientes).then(data => setData(data))
     setLoading(false)
   }, [flagToUpdate])
 
@@ -79,7 +81,7 @@ const DataTableClientes = () => {
     const promises = []
     arrayToDelete.forEach(x => {
       promises.push(
-        serviceClientes.deleteCliente(x)
+        serviceClientes.deleteCliente(city.state.portClientes, x)
       )
     })
     Promise.all(promises).then(() => {
