@@ -15,6 +15,7 @@ import FormVentas from './components/Routes/FormVentas'
 import Clientes from './pages/Clientes'
 import Usuarios from './pages/Usuarios'
 import Reportes from './pages/Reportes'
+import Ciudades from './pages/Ciudades'
 
 function App () {
   const slideCard = useRef()
@@ -75,6 +76,9 @@ function App () {
                 <Reportes />
             </ResponsiveDrawer>
             </ProtectedRoute>
+          } />
+          <Route path='/Ciudades' element={
+              <Ciudades/>
           } />
         </Routes>
       </SessionProvider>
