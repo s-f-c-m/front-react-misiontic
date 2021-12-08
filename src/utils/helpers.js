@@ -4,8 +4,6 @@ const csvToArray = (text = '', delim = ',') => {
   const headers = text.slice(0, text.indexOf('\n')).split(delim)
   const rows = text.slice(text.indexOf('\n') + 1).split('\r\n')
 
-  console.log(headers)
-
   const newArray = rows.map((row) => {
     const values = row.split(delim)
     const eachObject = headers.reduce((obj, header, i) => {
@@ -15,7 +13,7 @@ const csvToArray = (text = '', delim = ',') => {
     return eachObject
   })
 
-  return newArray
+  return newArray.slice(0, -1)
 }
 
 export { csvToArray }
