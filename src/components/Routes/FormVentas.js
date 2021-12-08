@@ -2,7 +2,6 @@ import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import { useState, useRef, useContext } from 'react'
 import Grid from '@mui/material/Grid'
-// import axios from 'axios'
 import InputAdornment from '@mui/material/InputAdornment'
 import { Button, Input } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
@@ -12,9 +11,7 @@ import PersonSearchIcon from '@mui/icons-material/PersonSearch'
 import ListadoProductos from './ListadoProductos'
 import TableContainer from '@mui/material/TableContainer'
 import FormControl from '@mui/material/FormControl'
-// import InputLabel from '@mui/material/InputLabel'
 import TextField from '@mui/material/TextField'
-// import Fab from '@mui/material/Fab'
 import ventasServices from '../../services/ventas'
 import productosService from '../../services/productos'
 import clientesService from '../../services/clientes'
@@ -31,9 +28,6 @@ export default function FormVentas (props) {
 
   const handleSubmitFormCliente = async (e) => {
     e.preventDefault()
-    // const headers = {
-    //   'Content-Type': 'application/json'
-    // }
     if (refFormCliente.current[0].value.trim() === '') {
       setMensajeCedula('Campo requerido')
     } else {
@@ -44,16 +38,6 @@ export default function FormVentas (props) {
       }).catch(() => {
         setMessage({ open: true, severity: 'error', message: 'Cliente no encontrado' })
       })
-      // try {
-      //   const { data } = await axios.get(
-      //     'http://localhost:8083/api/v1/clientes/' + cedula,
-      //     { headers }
-      //   )
-      //   setName(data.nombreCliente)
-      //   setMensajeCliente('')
-      // } catch {
-      //   setMessage({ open: true, severity: 'error', message: 'Cliente no encontrado' })
-      // }
     }
   }
 
@@ -73,18 +57,6 @@ export default function FormVentas (props) {
 
   const valorProducto = useRef(0) // valor unitario del producto sin IVA
   const ivaProducto = useRef(0)
-
-  // console.log("---cantidad del producto:" + cantidadProducto)
-  // console.log("---valor del producto" + valorProducto.current)
-  // console.log("---total: " + cantidadProducto * valorProducto.current)
-
-  // const handleSumbitVenta = (e) => {
-  //   e.preventDefault()
-  //   // console.log(e)
-  //   if (e.target.btnVentaProducto.value === 'buscarProducto') {
-  //     buscarProducto()
-  //   }
-  // }
 
   const buscar = async (e) => {
     e.preventDefault()

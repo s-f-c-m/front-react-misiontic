@@ -1,5 +1,14 @@
 import Select from 'react-select'
 
+const customStyles = {
+  menu: (provided) => ({
+    ...provided,
+    borderBottom: '1px dotted pink',
+    color: 'black',
+    padding: 10
+  })
+}
+
 export const CustomSelect = ({
   placeholder,
   field,
@@ -28,6 +37,7 @@ export const CustomSelect = ({
 
   return (
     <Select
+      styles={customStyles}
       name={field.name}
       value={getValue()}
       onChange={onChange}

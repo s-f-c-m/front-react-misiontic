@@ -4,6 +4,7 @@ import serviceClientes from '../services/clientes'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import { ThemeContext } from '../theme/ThemeContext'
+import { CityContext } from '../CiudadContext/CiudadContext'
 import { styled } from '@mui/material/styles'
 import Paper from '@mui/material/Paper'
 import reporteUtils from '../utils/reportes'
@@ -99,11 +100,12 @@ const Reportes = () => {
   const [selected, setSelected] = useState([])
   // const [message, setMessage] = useState({ open: false, severity: '', message: '' })
   const theme = useContext(ThemeContext)
+  const city = useContext(CityContext)
 
   useEffect(() => {
-    if (reporte === 'clientes') serviceClientes.getAll().then(data => setData(data))
+    if (reporte === 'clientes') serviceClientes.getAll(city.state.portClientes).then(data => setData(data))
     if (reporte === 'ventas') {
-      reporteUtils.ventasPorCliente().then(data => setData(data))
+      reporteUtils.ventasPorCliente(city.state.portClientes, city.state.portVentas).then(data => setData(data))
     }
   }, [reporte])
 
