@@ -18,6 +18,7 @@ import UploadFileIcon from '@mui/icons-material/UploadFile'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import TableChartIcon from '@mui/icons-material/TableChart'
 import GroupIcon from '@mui/icons-material/Group'
+import InventoryIcon from '@mui/icons-material/Inventory'
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
 import Avatar from '@mui/material/Avatar'
 import { SessionContext } from '../../../auth/session'
@@ -46,6 +47,7 @@ function ResponsiveDrawer ({ children, window, ...props }) {
     <div>
       <Toolbar />
       <NavLink link='/productos' icon={<UploadFileIcon />} >Productos</NavLink>
+      <NavLink link='/proveedores' icon={<InventoryIcon />} >Proveedores</NavLink>
       <NavLink link='/clientes' icon={<GroupIcon />}>Clientes</NavLink>
       {session.roles.includes('admin') && <NavLink link='/usuarios' icon={<SupervisedUserCircleIcon />}>Usuarios</NavLink> }
       <NavLink link='/ventas' icon={<AttachMoneyIcon />}>Ventas</NavLink>

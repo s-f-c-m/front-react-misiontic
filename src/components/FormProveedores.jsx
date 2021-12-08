@@ -5,21 +5,21 @@ import Button from './Button'
 import { Formik, Form } from 'formik'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
-import serviceClientes from '../services/clientes'
+import serviceProveedores from '../services/proveedores'
 import { CityContext } from '../CiudadContext/CiudadContext'
 
-export default function FormClientes (props) {
+export default function FormProveedores (props) {
   const [isCliente, setIsCliente] = useState(false)
   const { selected, flagToUpdate, setFlagToUpdate } = props
   const [message, setMessage] = useState({ severity: '', title: '', message: '' })
   const city = useContext(CityContext)
 
   const formularioInicial = {
-    cedulaCliente: '',
-    nombreCliente: '',
-    emailCliente: '',
-    direccionCliente: '',
-    telefonoCliente: ''
+    nitProveedor: '',
+    nombreProveedor: '',
+    direccionProveedor: '',
+    ciudadProveedor: '',
+    telefonoProveedor: ''
   }
 
   const [formulario, setFormulario] = useState(formularioInicial)
@@ -29,19 +29,19 @@ export default function FormClientes (props) {
     const op = httpAction
     switch (op) {
       case 'register':
-        serviceClientes.postCliente(city.state.portClientes, values).then(() => {
-          setMessage({ severity: 'success', title: 'Cliente Agregado', message: 'Se agregó el cliente satisfactoriamente' })
+        serviceProveedores.postProveedor(city.state.portProveedores, values).then(() => {
+          setMessage({ severity: 'success', title: 'Proveedor Agregado', message: 'Se agregó el proveedor satisfactoriamente' })
         }).catch(() => {
-          setMessage({ severity: 'error', title: 'Error Agregar', message: 'Ocurrió un error al agregar el cliente. Intente de nuevo o comuníquese con el administrador' })
+          setMessage({ severity: 'error', title: 'Error Agregar', message: 'Ocurrió un error al agregar el preveedor. Intente de nuevo o comuníquese con el administrador' })
         }).finally(() => {
           setFlagToUpdate(!flagToUpdate)
         })
         break
       case 'update':
-        serviceClientes.putCliente(city.state.portClientes, values).then(() => {
-          setMessage({ severity: 'success', title: 'Cliente Modificado', message: 'Se modificó el cliente satisfactoriamente' })
+        serviceProveedores.putProveedor(city.state.portProveedores, values).then(() => {
+          setMessage({ severity: 'success', title: 'Proveedor Modificado', message: 'Se modificó el proveedor satisfactoriamente' })
         }).catch(() => {
-          setMessage({ severity: 'error', title: 'Error Modificar', message: 'Ocurrió un error al modificar el cliente. Intente de nuevo o comuníquese con el administrador' })
+          setMessage({ severity: 'error', title: 'Error Modificar', message: 'Ocurrió un error al modificar el proveedor. Intente de nuevo o comuníquese con el administrador' })
         }).finally(() => {
           setFlagToUpdate(!flagToUpdate)
         })
@@ -53,10 +53,10 @@ export default function FormClientes (props) {
 
   useEffect(() => {
     if (selected.length === 1) {
-      serviceClientes.getCliente(city.state.portClientes, selected[0]).then((data) => {
+      serviceProveedores.getProveedor(city.state.portProveedores, selected[0]).then((data) => {
         setFormulario(data)
       }).catch(() => {
-        alert('Error al consultar cliente')
+        alert('Error al consultar proveedor')
       }).finally(() => {
         setIsCliente(true)
       })
@@ -85,35 +85,34 @@ export default function FormClientes (props) {
         >{props => (
           <Form style={{ display: 'grid', gap: '5px' }}>
             <InputForm
-              label='Cédula'
-              name='cedulaCliente'
-              placeholder='Cédula del cliente'
+              label='NIT'
+              name='nitProveedor'
+              placeholder='Nit del Proveedor'
               disabled={isCliente}
               required='required'
             />
             <InputForm
               label='Nombre'
-              name='nombreCliente'
-              placeholder='Nombre del Cliente'
-              required='required'
-            />
-            <InputForm
-              label='Email'
-              name='emailCliente'
-              type='email'
-              placeholder='Email del cliente'
+              name='nombreProveedor'
+              placeholder='Nombre del Proveedor'
               required='required'
             />
             <InputForm
               label='Dirección'
-              name='direccionCliente'
-              placeholder='Dirección del cliente'
+              name='direccionProveedor'
+              placeholder='Dirección del Proveedor'
+              required='required'
+            />
+            <InputForm
+              label='Ciudad'
+              name='ciudadProveedor'
+              placeholder='Ciudad del Proveedor'
               required='required'
             />
             <InputForm
               label='Teléfono'
-              name='telefonoCliente'
-              placeholder='Teléfono del cliente'
+              name='telefonoProveedor'
+              placeholder='Teléfono del Proveedor'
               required='required'
             />
             <div style={{ display: 'flex', gap: '5px', 'justify-content': 'space-between' }} >

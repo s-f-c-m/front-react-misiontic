@@ -17,6 +17,7 @@ import Clientes from './pages/Clientes'
 import Usuarios from './pages/Usuarios'
 import Reportes from './pages/Reportes'
 import Ciudades from './pages/Ciudades'
+import Proveedores from './pages/Proveedores'
 
 function App () {
   const slideCard = useRef()
@@ -42,6 +43,13 @@ function App () {
               <ProtectedRoute>
                 <ResponsiveDrawer>
                   <ReadCsv />
+                </ResponsiveDrawer>
+              </ProtectedRoute>
+            } />
+            <Route path='/proveedores' element={
+              <ProtectedRoute>
+                <ResponsiveDrawer>
+                  <Proveedores />
                 </ResponsiveDrawer>
               </ProtectedRoute>
             } />

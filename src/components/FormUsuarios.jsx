@@ -102,7 +102,7 @@ export default function FormUsuarios (props) {
   }
 
   return <>
-    <div style={{ display: 'flex', 'flex-direction': 'column' }}>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
     {passerror &&
     <Alert severity='error'>
     <AlertTitle>Error</AlertTitle>

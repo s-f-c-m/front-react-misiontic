@@ -6,7 +6,8 @@ const defaultCity = {
   nombre: 'Bogotá',
   portClientes: 8083,
   portProductos: 8085,
-  portVentas: 8087
+  portVentas: 8087,
+  portProveedores: 8084
 }
 
 const cityReducer = (state, action) => {
@@ -17,7 +18,8 @@ const cityReducer = (state, action) => {
           nombre: 'Bogotá',
           portClientes: 8083,
           portProductos: 8085,
-          portVentas: 8087
+          portVentas: 8087,
+          portProveedores: 8084
         }
       )
     case 'cali':
@@ -26,7 +28,8 @@ const cityReducer = (state, action) => {
           nombre: 'Cali',
           portClientes: 8093,
           portProductos: 8095,
-          portVentas: 8097
+          portVentas: 8097,
+          portProveedores: 8094
         }
       )
     case 'medellin':
@@ -35,7 +38,8 @@ const cityReducer = (state, action) => {
           nombre: 'Medellin',
           portClientes: 8103,
           portProductos: 8105,
-          portVentas: 8107
+          portVentas: 8107,
+          portProveedores: 8104
         }
       )
 
