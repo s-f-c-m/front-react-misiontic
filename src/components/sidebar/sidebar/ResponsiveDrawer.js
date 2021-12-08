@@ -20,6 +20,7 @@ import TableChartIcon from '@mui/icons-material/TableChart'
 import GroupIcon from '@mui/icons-material/Group'
 import InventoryIcon from '@mui/icons-material/Inventory'
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
+import AssessmentIcon from '@mui/icons-material/Assessment'
 import Avatar from '@mui/material/Avatar'
 import { SessionContext } from '../../../auth/session'
 import { CityContext } from '../../../CiudadContext/CiudadContext'
@@ -52,6 +53,7 @@ function ResponsiveDrawer ({ children, window, ...props }) {
       {session.roles.includes('admin') && <NavLink link='/usuarios' icon={<SupervisedUserCircleIcon />}>Usuarios</NavLink> }
       <NavLink link='/ventas' icon={<AttachMoneyIcon />}>Ventas</NavLink>
       <NavLink link='/reportes' icon={<TableChartIcon />}>Reportes</NavLink>
+      {city.state.nombre === 'Bogotá' && <NavLink link='/consolidado' icon={<AssessmentIcon />}>Consolidado</NavLink>}
       {/* <AccordionSummary /> */}
     </div>
   )

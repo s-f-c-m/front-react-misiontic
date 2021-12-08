@@ -18,6 +18,7 @@ import Usuarios from './pages/Usuarios'
 import Reportes from './pages/Reportes'
 import Ciudades from './pages/Ciudades'
 import Proveedores from './pages/Proveedores'
+import Consolidado from './pages/Consolidado'
 
 function App () {
   const slideCard = useRef()
@@ -83,6 +84,13 @@ function App () {
             } />
             <Route path='/Ciudades' element={
             <Ciudades/>
+            } />
+            <Route path='/consolidado' element={
+              <ProtectedRoute>
+                <ResponsiveDrawer>
+                  <Consolidado />
+                </ResponsiveDrawer>
+              </ProtectedRoute>
             } />
           </Routes>
         </CityProvider>

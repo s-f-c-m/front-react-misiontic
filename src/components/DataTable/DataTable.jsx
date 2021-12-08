@@ -111,7 +111,7 @@ export default function DataTable (props) {
         />
         <TableContainer>
           <Table
-            sx={{ minWidth: 750 }}
+            sx={{ minWidth: 350 }}
             aria-labelledby="tableTitle"
             size={'medium'}
           >
