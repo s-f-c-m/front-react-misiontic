@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import DataTable from '../components/DataTable/DataTable'
 import Paper from '@mui/material/Paper'
-import consolidado from '../services/ventas'
+import ventas from '../services/ventas'
 
 const headCells = [
   {
@@ -16,30 +16,35 @@ const headCells = [
   }
 ]
 
-const ventasData = [
-  {
-    ciudad: 'Bogotá',
-    totalVentas: consolidado.totalVentas('bogota')
-  },
-  {
-    ciudad: 'Cali',
-    totalVentas: 6546
-  },
-  {
-    ciudad: 'Medellín',
-    totalVentas: 852255
-  }
-]
-
 const Consolidado = () => {
   const [data, setData] = useState([])
   const [filteredData, setFilteredData] = useState([])
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState([])
 
+  const getData = async () => {
+    const tBog = await ventas.totalVentas('bogota')
+    const tCal = await ventas.totalVentas('cali')
+    const tMed = await ventas.totalVentas('medellin')
+    setData([
+      {
+        ciudad: 'Bogotá',
+        totalVentas: Math.round(tBog * 100) / 100
+      },
+      {
+        ciudad: 'Cali',
+        totalVentas: Math.round(tCal * 100) / 100
+      },
+      {
+        ciudad: 'Medellín',
+        totalVentas: Math.round(tMed * 100) / 100
+      }
+    ])
+  }
+
   useEffect(() => {
-    setData(ventasData)
-  }, [ventasData])
+    getData()
+  }, [])
 
   useEffect(() => {
     setFilteredData(data.filter((x) => Object.values(x).toString().toLowerCase().includes(search.toLowerCase())))

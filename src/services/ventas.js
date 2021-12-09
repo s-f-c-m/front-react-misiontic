@@ -46,12 +46,14 @@ const getAllVentas = async (port) => {
 
 const totalVentas = (ciudad) => {
   switch (ciudad) {
-    case ciudad === 'bogota' :
-      return getAllVentas(portBogota).reduce((acc, venta) => acc + venta.valor_venta, 0).toFixed(2)
-    case ciudad === 'cali' :
-      return getAllVentas(portCali).reduce((acc, venta) => acc + venta.valor_venta, 0).toFixed(2)
-    case ciudad === 'medellin':
-      return getAllVentas(portMedellin).reduce((acc, venta) => acc + venta.valor_venta, 0).toFixed(2)
+    case 'bogota' :
+      return getAllVentas(portBogota).then((data) => data.reduce((acc, el) => acc + el.valor_venta, 0))
+    case 'cali' :
+      return getAllVentas(portCali).then((data) => data.reduce((acc, el) => acc + el.valor_venta, 0))
+    case 'medellin':
+      return getAllVentas(portMedellin).then((data) => data.reduce((acc, el) => acc + el.valor_venta, 0))
+    default:
+      break
   }
 }
 

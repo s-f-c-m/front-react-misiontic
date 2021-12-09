@@ -158,7 +158,7 @@ export default function DataTable (props) {
                   />
                   </TableCell>
                   }
-                    { k.map((x, i) => <TableCell key={i} align='left'>{x}</TableCell>) }
+                    { k.map((x, i) => <TableCell key={i} align='left'>{x.toString()}</TableCell>) }
                     </TableRow>
                   )
                 })}
