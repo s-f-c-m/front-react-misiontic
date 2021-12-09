@@ -1,6 +1,9 @@
 import axios from 'axios'
 const baseUrl = 'http://localhost:'
 const apiRoute = '/api/v1/ventas/'
+const portBogota = '8087'
+const portCali = '8097'
+const portMedellin = '8107'
 
 // const registrarDetalleVentas = async (port, data) => {
 //   const headers = {
@@ -41,4 +44,15 @@ const getAllVentas = async (port) => {
   return data
 }
 
-export default { registrarVenta, getAllVentas }
+const totalVentas = (ciudad) => {
+  switch (ciudad) {
+    case ciudad === 'bogota' :
+      return getAllVentas(portBogota).reduce((acc, venta) => acc + venta.valor_venta, 0).toFixed(2)
+    case ciudad === 'cali' :
+      return getAllVentas(portCali).reduce((acc, venta) => acc + venta.valor_venta, 0).toFixed(2)
+    case ciudad === 'medellin':
+      return getAllVentas(portMedellin).reduce((acc, venta) => acc + venta.valor_venta, 0).toFixed(2)
+  }
+}
+
+export default { registrarVenta, getAllVentas, totalVentas }

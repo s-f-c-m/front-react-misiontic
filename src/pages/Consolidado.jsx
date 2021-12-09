@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import DataTable from '../components/DataTable/DataTable'
 import Paper from '@mui/material/Paper'
+import consolidado from '../services/ventas'
 
 const headCells = [
   {
@@ -18,7 +19,7 @@ const headCells = [
 const ventasData = [
   {
     ciudad: 'Bogotá',
-    totalVentas: 13246
+    totalVentas: consolidado.totalVentas('bogota')
   },
   {
     ciudad: 'Cali',
@@ -38,7 +39,7 @@ const Consolidado = () => {
 
   useEffect(() => {
     setData(ventasData)
-  }, [])
+  }, [ventasData])
 
   useEffect(() => {
     setFilteredData(data.filter((x) => Object.values(x).toString().toLowerCase().includes(search.toLowerCase())))
@@ -56,7 +57,7 @@ const Consolidado = () => {
             setSelected={setSelected}
             showControls={false}
             />
-          <Paper variant='outlined' elevation={12} style={{ padding: 10, alignSelf: 'flex-end' }} >Total Ventas: {data.reduce((acc, el) => acc + el.totalVentas, 0).toFixed(2)} $</Paper>
+          <Paper variant='outlined' elevation={12} style={{ padding: 10, alignSelf: 'flex-end' }} >Total Ventas: ${data.reduce((acc, el) => acc + el.totalVentas, 0).toFixed(2)}</Paper>
   </div>
   )
 }
