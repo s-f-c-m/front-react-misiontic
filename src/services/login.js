@@ -1,12 +1,13 @@
 import axios from 'axios'
 import { getSessionCookie } from '../auth/session'
+const host = 'http://localhost:8082/login/'
 
 const login = async (credentials) => {
   const headers = {
     'Content-Type': 'application/json'
   }
   const { data } = await axios.post(
-    'http://localhost:8082/login',
+    host,
     credentials,
     { headers }
   )
@@ -21,7 +22,7 @@ const isAuhtenticated = async () => {
   }
   try {
     const { data } = await axios.get(
-      'http://localhost:8082/login/validate',
+      host + 'validate',
       { headers }
     )
     return data

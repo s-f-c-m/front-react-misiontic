@@ -1,0 +1,169 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: app-dev
+    image: app-dev
+    build:
+      context: .
+      target: development
+    volumes:
+      - ./src:/app/src
+    ports:
+      - 3000:3000
+  usuarios:
+    image: sfcm/mintic:usuarios
+    container_name: usuarios
+    hostname: usuarios
+    ports:
+      - 8082:8082
+    environment:
+      - MONGO_DETAILS=mongodb+srv://${TG_MONGODB_USERNAME}:${TG_MONGODB_PASSWORD}@${TG_MONGODB_HOST}/db_users?retryWrites=true&w=majority
+      - MONGO_DB=db_users
+      - MONGO_COLLECTION=users
+      - PYTHONPATH=/code
+      - SECRET_KEY=nA4QjrndALVotmHd0gG2fUHxLcJ6BA9IW0gPUkREMsykPUP-IA-Q6s_a_CUanCE0BpfVpGIlzGNg9QhYly2m7ZtSaNmhRyrdZBHYuoTR1qTFg5CNNjp0-5Tym75K5YNH3nWGXIgy-dfy3wsh3Dwm-8Aaj4xtIqNqacyRMcrPTck
+  productos_bogota:
+    image: sfcm/mintic:productos
+    container_name: productos-bog
+    hostname: productos-bog
+    ports:
+      - 8085:8085
+    environment:
+      - TG_CITY=BOG
+      - TG_MONGODB_HOST=${TG_MONGODB_HOST}
+      - TG_MONGODB_PASSWORD=${TG_MONGODB_PASSWORD}
+      - TG_MONGODB_USERNAME=${TG_MONGODB_USERNAME}
+      - TG_PORT=8085
+  proveedores_bogota:
+    image: sfcm/mintic:proveedores
+    container_name: proveedores-bog
+    hostname: proveedores-bog
+    ports:
+      - 8084:8084
+    environment:
+      - TG_CITY=BOG
+      - TG_MONGODB_HOST=${TG_MONGODB_HOST}
+      - TG_MONGODB_PASSWORD=${TG_MONGODB_PASSWORD}
+      - TG_MONGODB_USERNAME=${TG_MONGODB_USERNAME}
+      - TG_PORT=8084
+  clientes_bogota:
+    image: sfcm/mintic:clientes
+    container_name: clientes-bog
+    hostname: clientes-bog
+    ports:
+      - 8083:8083
+    environment:
+      - TG_CITY=BOG
+      - TG_MONGODB_HOST=${TG_MONGODB_HOST}
+      - TG_MONGODB_PASSWORD=${TG_MONGODB_PASSWORD}
+      - TG_MONGODB_USERNAME=${TG_MONGODB_USERNAME}
+      - TG_PORT=8083
+  ventas_bogota:
+    image: sfcm/mintic:ventas
+    container_name: ventas-bog
+    hostname: ventas-bog
+    ports:
+      - 8087:8087
+    environment:
+      - TG_CITY=BOG
+      - TG_MONGODB_HOST=${TG_MONGODB_HOST}
+      - TG_MONGODB_PASSWORD=${TG_MONGODB_PASSWORD}
+      - TG_MONGODB_USERNAME=${TG_MONGODB_USERNAME}
+      - TG_PORT=8087
+  productos_cali:
+    image: sfcm/mintic:productos
+    container_name: productos-cal
+    hostname: productos-cal
+    ports:
+      - 8095:8095
+    environment:
+      - TG_CITY=CAL
+      - TG_MONGODB_HOST=${TG_MONGODB_HOST}
+      - TG_MONGODB_PASSWORD=${TG_MONGODB_PASSWORD}
+      - TG_MONGODB_USERNAME=${TG_MONGODB_USERNAME}
+      - TG_PORT=8095
+  proveedores_cali:
+    image: sfcm/mintic:proveedores
+    container_name: proveedores-cal
+    hostname: proveedores-cal
+    ports:
+      - 8094:8094
+    environment:
+      - TG_CITY=CAL
+      - TG_MONGODB_HOST=${TG_MONGODB_HOST}
+      - TG_MONGODB_PASSWORD=${TG_MONGODB_PASSWORD}
+      - TG_MONGODB_USERNAME=${TG_MONGODB_USERNAME}
+      - TG_PORT=8094
+  clientes_cali:
+    image: sfcm/mintic:clientes
+    container_name: clientes-cal
+    hostname: clientes-cal
+    ports:
+      - 8093:8093
+    environment:
+      - TG_CITY=CAL
+      - TG_MONGODB_HOST=${TG_MONGODB_HOST}
+      - TG_MONGODB_PASSWORD=${TG_MONGODB_PASSWORD}
+      - TG_MONGODB_USERNAME=${TG_MONGODB_USERNAME}
+      - TG_PORT=8093
+  ventas_cali:
+    image: sfcm/mintic:ventas
+    container_name: ventas-cal
+    hostname: ventas-cal
+    ports:
+      - 8097:8097
+    environment:
+      - TG_CITY=CAL
+      - TG_MONGODB_HOST=${TG_MONGODB_HOST}
+      - TG_MONGODB_PASSWORD=${TG_MONGODB_PASSWORD}
+      - TG_MONGODB_USERNAME=${TG_MONGODB_USERNAME}
+      - TG_PORT=8097
+  productos_medellin:
+    image: sfcm/mintic:productos
+    container_name: productos-med
+    hostname: productos-med
+    ports:
+      - 8105:8105
+    environment:
+      - TG_CITY=MED
+      - TG_MONGODB_HOST=${TG_MONGODB_HOST}
+      - TG_MONGODB_PASSWORD=${TG_MONGODB_PASSWORD}
+      - TG_MONGODB_USERNAME=${TG_MONGODB_USERNAME}
+      - TG_PORT=8105
+  proveedores_medellin:
+    image: sfcm/mintic:proveedores
+    container_name: proveedores-med
+    hostname: proveedores-med
+    ports:
+      - 8104:8104
+    environment:
+      - TG_CITY=MED
+      - TG_MONGODB_HOST=${TG_MONGODB_HOST}
+      - TG_MONGODB_PASSWORD=${TG_MONGODB_PASSWORD}
+      - TG_MONGODB_USERNAME=${TG_MONGODB_USERNAME}
+      - TG_PORT=8104
+  clientes_medellin:
+    image: sfcm/mintic:clientes
+    container_name: clientes-med
+    hostname: clientes-med
+    ports:
+      - 8103:8103
+    environment:
+      - TG_CITY=MED
+      - TG_MONGODB_HOST=${TG_MONGODB_HOST}
+      - TG_MONGODB_PASSWORD=${TG_MONGODB_PASSWORD}
+      - TG_MONGODB_USERNAME=${TG_MONGODB_USERNAME}
+      - TG_PORT=8103
+  ventas_medellin:
+    image: sfcm/mintic:ventas
+    container_name: ventas-med
+    hostname: ventas-med
+    ports:
+      - 8107:8107
+    environment:
+      - TG_CITY=MED
+      - TG_MONGODB_HOST=${TG_MONGODB_HOST}
+      - TG_MONGODB_PASSWORD=${TG_MONGODB_PASSWORD}
+      - TG_MONGODB_USERNAME=${TG_MONGODB_USERNAME}
+      - TG_PORT=8107
