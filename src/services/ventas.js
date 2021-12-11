@@ -1,9 +1,11 @@
 import axios from 'axios'
+import { getSessionCookie } from '../auth/session'
 const baseUrl = 'http://localhost:'
 const apiRoute = '/api/v1/ventas/'
 const portBogota = '8087'
 const portCali = '8097'
 const portMedellin = '8107'
+
 
 // const registrarDetalleVentas = async (port, data) => {
 //   const headers = {
@@ -22,8 +24,10 @@ const portMedellin = '8107'
 // }
 
 const registrarVenta = async (port, values) => {
+  const cookieSession = getSessionCookie()
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.post(
     baseUrl + port + apiRoute,
@@ -34,8 +38,10 @@ const registrarVenta = async (port, values) => {
 }
 
 const getAllVentas = async (port) => {
+  const cookieSession = getSessionCookie()
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.get(
     baseUrl + port + apiRoute,

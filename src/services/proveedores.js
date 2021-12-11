@@ -1,12 +1,14 @@
 import axios from 'axios'
-// import { getSessionCookie } from '../auth/session'
+import { getSessionCookie } from '../auth/session'
 
 const baseUrl = 'http://localhost:'
 const apiRoute = '/api/v1/proveedores/'
 
 const getAll = async (port) => {
+  const cookieSession = getSessionCookie()
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.get(
     baseUrl + port + apiRoute,
@@ -16,8 +18,10 @@ const getAll = async (port) => {
 }
 
 const postProveedor = async (port, data) => {
+  const cookieSession = getSessionCookie()
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const resp = await axios.post(
     baseUrl + port + apiRoute,
@@ -28,8 +32,10 @@ const postProveedor = async (port, data) => {
 }
 
 const getProveedor = async (port, nit) => {
+  const cookieSession = getSessionCookie()
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.get(
     baseUrl + port + apiRoute + nit,
@@ -39,8 +45,10 @@ const getProveedor = async (port, nit) => {
 }
 
 const putProveedor = async (port, datos) => {
+  const cookieSession = getSessionCookie()
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.put(
     baseUrl + port + apiRoute + datos.nitProveedor,
@@ -51,8 +59,10 @@ const putProveedor = async (port, datos) => {
 }
 
 const deleteProveedor = async (port, nit) => {
+  const cookieSession = getSessionCookie()
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.delete(
     baseUrl + port + apiRoute + nit,

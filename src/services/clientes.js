@@ -1,12 +1,16 @@
 import axios from 'axios'
+import { getSessionCookie } from '../auth/session'
+
 // import { getSessionCookie } from '../auth/session'
 
 const baseUrl = 'http://localhost:'
 const apiRoute = '/api/v1/clientes/'
 
 const getAll = async (port) => {
+  const cookieSession = getSessionCookie()
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.get(
     baseUrl + port + apiRoute,
@@ -16,8 +20,10 @@ const getAll = async (port) => {
 }
 
 const postCliente = async (port, data) => {
+  const cookieSession = getSessionCookie()
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const resp = await axios.post(
     baseUrl + port + apiRoute,
@@ -28,8 +34,10 @@ const postCliente = async (port, data) => {
 }
 
 const getCliente = async (port, cedula) => {
+  const cookieSession = getSessionCookie()
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.get(
     baseUrl + port + apiRoute + cedula,
@@ -39,8 +47,10 @@ const getCliente = async (port, cedula) => {
 }
 
 const putCliente = async (port, datos) => {
+  const cookieSession = getSessionCookie()
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.put(
     baseUrl + port + apiRoute + datos.cedulaCliente,
@@ -51,8 +61,10 @@ const putCliente = async (port, datos) => {
 }
 
 const deleteCliente = async (port, cedula) => {
+  const cookieSession = getSessionCookie()
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.delete(
     baseUrl + port + apiRoute + cedula,
