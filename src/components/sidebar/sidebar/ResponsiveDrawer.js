@@ -47,13 +47,13 @@ function ResponsiveDrawer ({ children, window, ...props }) {
   const drawer = (
     <div>
       <Toolbar />
-      <NavLink link='/productos' icon={<UploadFileIcon />} >Productos</NavLink>
-      <NavLink link='/proveedores' icon={<InventoryIcon />} >Proveedores</NavLink>
-      <NavLink link='/clientes' icon={<GroupIcon />}>Clientes</NavLink>
-      {session.roles.includes('admin') && <NavLink link='/usuarios' icon={<SupervisedUserCircleIcon />}>Usuarios</NavLink> }
-      <NavLink link='/ventas' icon={<AttachMoneyIcon />}>Ventas</NavLink>
-      <NavLink link='/reportes' icon={<TableChartIcon />}>Reportes</NavLink>
-      {city.state.nombre === 'Bogotá' && <NavLink link='/consolidado' icon={<AssessmentIcon />}>Consolidado</NavLink>}
+      {(session.roles.includes('admin') || session.roles.includes('productos')) && <NavLink link='/productos' icon={<UploadFileIcon />} >Productos</NavLink>}
+      {(session.roles.includes('admin') || session.roles.includes('proveedores')) && <NavLink link='/proveedores' icon={<InventoryIcon />} >Proveedores</NavLink>}
+      {(session.roles.includes('admin') || session.roles.includes('cliente')) && <NavLink link='/clientes' icon={<GroupIcon />}>Clientes</NavLink>}
+      {(session.roles.includes('admin') || session.roles.includes('usuarios')) && <NavLink link='/usuarios' icon={<SupervisedUserCircleIcon />}>Usuarios</NavLink> }
+      {(session.roles.includes('admin') || session.roles.includes('ventas')) && <NavLink link='/ventas' icon={<AttachMoneyIcon />}>Ventas</NavLink>}
+      {(session.roles.includes('admin') || session.roles.includes('reportes')) && <NavLink link='/reportes' icon={<TableChartIcon />}>Reportes</NavLink>}
+      {(session.roles.includes('admin') || session.roles.includes('reportes')) && city.state.nombre === 'Bogotá' && <NavLink link='/consolidado' icon={<AssessmentIcon />}>Consolidado</NavLink>}
       {/* <AccordionSummary /> */}
     </div>
   )
