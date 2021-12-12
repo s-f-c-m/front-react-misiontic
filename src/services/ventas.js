@@ -1,27 +1,14 @@
 import axios from 'axios'
 import { getSessionCookie } from '../auth/session'
-const baseUrl = 'http://localhost:'
+
+const apiHost = process.env.REACT_APP_API_HOST
+
+const baseUrl = apiHost + ':'
 const apiRoute = '/api/v1/ventas/'
+
 const portBogota = '8087'
 const portCali = '8097'
 const portMedellin = '8107'
-
-
-// const registrarDetalleVentas = async (port, data) => {
-//   const headers = {
-//     'Content-Type': 'application/json'
-//   }
-
-//   try {
-//     await axios.post(
-//       'http://localhost:8087/api/v1/detalleVentas/',
-//       JSON.stringify(data),
-//       { headers }
-//     )
-//   } catch {
-//     alert('no se pudo ingresar los detalles de la venta')
-//   }
-// }
 
 const registrarVenta = async (port, values) => {
   const cookieSession = getSessionCookie()

@@ -1,10 +1,18 @@
 import axios from 'axios'
+import { getSessionCookie } from '../auth/session'
 
-const baseUrl = 'http://localhost:8082/user'
+const apiHost = process.env.REACT_APP_API_HOST
+const apiPort = 8082
+
+// const baseUrl = 'http://localhost:8082/user'
+const baseUrl = apiHost + ':' + apiPort + '/user'
+
+const cookieSession = getSessionCookie()
 
 const getAll = async () => {
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
 
   const { data } = await axios.get(
@@ -24,7 +32,8 @@ const getAll = async () => {
 const postUsuario = async (values) => {
   const { passwordconfirm, ...newvalues } = values
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.post(
     baseUrl,
@@ -37,7 +46,8 @@ const postUsuario = async (values) => {
 
 const deleteUsuario = async (user) => {
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.delete(
     baseUrl + '/' + user,
@@ -49,7 +59,8 @@ const deleteUsuario = async (user) => {
 const putUsuario = async (values) => {
   const { user, passwordconfirm, ...newValues } = values
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.put(
     baseUrl + '/' + user,
@@ -63,7 +74,8 @@ const putUsuario = async (values) => {
 const putUsuarioPassword = async (values) => {
   const { user, ...newValues } = values
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.put(
     baseUrl + '/password/' + user,
@@ -77,7 +89,8 @@ const putUsuarioPassword = async (values) => {
 const putUsuarioNombreRoles = async (values) => {
   const { user, ...newValues } = values
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.put(
     baseUrl + '/nameroles/' + user,
@@ -92,7 +105,8 @@ const putUsuarioNombre = async (values) => {
   const { user, ...newValues } = values
 
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.put(
     baseUrl + '/name/' + user,
@@ -106,7 +120,8 @@ const putUsuarioNombre = async (values) => {
 const putUsuarioRoles = async (values) => {
   const { user, ...newValues } = values
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.put(
     baseUrl + '/roles/' + user,
@@ -119,7 +134,8 @@ const putUsuarioRoles = async (values) => {
 
 const getUsuario = async (user) => {
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + cookieSession
   }
   const { data } = await axios.get(
     baseUrl + '/' + user,

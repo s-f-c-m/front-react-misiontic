@@ -1,6 +1,10 @@
 import axios from 'axios'
 import { getSessionCookie } from '../auth/session'
-const host = 'http://localhost:8082/login/'
+// const host = 'http://localhost:8082/login/'
+
+const apiHost = process.env.REACT_APP_API_HOST
+const apiPort = 8082
+const host = apiHost + ':' + apiPort + '/login'
 
 const login = async (credentials) => {
   const headers = {
@@ -22,7 +26,7 @@ const isAuhtenticated = async () => {
   }
   try {
     const { data } = await axios.get(
-      host + 'validate',
+      host + '/validate',
       { headers }
     )
     return data

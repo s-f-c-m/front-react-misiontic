@@ -2,8 +2,9 @@ import axios from 'axios'
 import { getSessionCookie } from '../auth/session'
 
 // import { getSessionCookie } from '../auth/session'
+const apiHost = process.env.REACT_APP_API_HOST
 
-const baseUrl = 'http://localhost:'
+const baseUrl = apiHost + ':'
 const apiRoute = '/api/v1/clientes/'
 
 const getAll = async (port) => {
